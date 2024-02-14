@@ -1,17 +1,17 @@
 ## VASO PIPELINE - SEGMENTATION AND LAYERS
 
 ## Set up the environment
-root_dir=/Volumes/PAUL/datalad/analysis_high-res_BLAM_NIH_vaso_sandbox
+root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
 raw_dir=${root_dir}/inputs/raw
-derivatives_dir=${root_dir}/derivatives_layerfMRI-toolbox
+derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
 
-vasopipeline_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles
-freesurfer_reconall_dir=${derivatives_dir}/freesurfer-reconall
-vasopipeline_mesh_dir=${derivatives_dir}/vasopipeline-surface-mesh
-vasopipeline_layers_dir=${derivatives_dir}/vasopipeline-layers
+layerfMRI_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles
+layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-fs-segmentation
+layerfMRI_mesh_dir=${derivatives_dir}/vasopipeline-surface-mesh
+layerfMRI_layers_dir=${derivatives_dir}/vasopipeline-layers
 
-source ${code_dir}/src/pipeline/config_layerfMRI_pipeline.sh
+source ${code_dir}/lib/layerfMRI-toolbox/src/config_layerfMRI_pipeline.sh
 
 ## Get raw data (bidslike files)
 
@@ -19,6 +19,8 @@ source ${code_dir}/src/pipeline/config_layerfMRI_pipeline.sh
 
 subID="SC04"
 sesID="02"
+
+import_raw_bidslike.sh <raw_dir> <output_dir> <subID> <sesID> <modality> <taskID> 
 
 ## Run presurfer
 
