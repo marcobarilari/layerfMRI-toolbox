@@ -4,15 +4,20 @@ set -e
 
 ## set up the environment here below
 
-export FREESURFER_HOME=/Applications/freesurfer/7.4.1
+export FREESURFER_HOME=/usr/local/freesurfer/7.3.2
 
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 
 ## do not modify from here below 
 
-# Add to path the scripts in subfolders
-SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# get the path of the current script aka the toolbox
+SCRIPT_LAYERFMRI_TOOLBOX="$(dirname $0)"
 
-PATH=$PATH$( find $SCRIPT_PATH/src/ -type d -printf ":%p" )
+# make all the scripts executable
+chmod 777 $SCRIPT_LAYERFMRI_TOOLBOX/*/*.sh
+
+# add the toolbox to the path
+export PATH=$PATH:$(find $SCRIPT_LAYERFMRI_TOOLBOX -maxdepth 1 -type d | paste -sd ":" -)
+
 
