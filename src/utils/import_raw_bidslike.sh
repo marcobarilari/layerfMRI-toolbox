@@ -1,8 +1,12 @@
 #!/bin/bash
 
+set -e
+
 ## Import the raw data with bidslike name to be analysed 
 #
 # usage: import_raw_bidslike.sh <raw_dir> <output_dir> <subID> <sesID> <modality> <taskID> 
+
+# get the input arguments
 raw_dir=$1
 output_dir=$2
 subID=$3
@@ -15,22 +19,28 @@ if [ -z "$sesID" ]; then
     sesID="*"
 fi
 
-mkdir -p "${output_dir}/sub-${subID}"
+# make dirs if not exist
+mkdir -p ${output_dir}
 
-if [ modality == "anat" ]; then
+mkdir -p ${output_dir}/sub-${subID}
 
-    find ${root_dir} -name "anat/sub-${subID}_ses-${sesID}" -exec cp {} "${output_dir}/sub-${subID}${session}" \;
+if [[ "$modality" == "anat" ]]; then
+
+    # copy the anata files
+    find ${raw_dir} -type d -name "anat" -exec find {} -name "sub-${subID}_ses-${sesID}*.nii(.gz)" \; -exec cp -rv -L {} ${output_dir}/sub-${subID} \;
 
 else
 
-    find ${root_dir} -name "sub-${subID}_ses-${sesID}_task-${taskID}*" -exec cp {} "${output_dir}/sub-${subID}${session}" \;
+    # to debug
+    find ${raw_dir} -type d -name "func" -exec find {} -name "sub-${subID}_ses-${sesID}*.nii(.gz)" \; -exec cp -rv -L {} ${output_dir}/sub-${subID} \;
 
 fi
 
+# unzip for matlab use only
 gunzip -r ${output_dir}/sub-${subID}
 
-# make sure the file is writable
-chmod 777 ${output_dir}/*.nii
+# make sure the files are writable
+chmod 777 ${output_dir}/sub-${subID}/*.nii
 
 
 
