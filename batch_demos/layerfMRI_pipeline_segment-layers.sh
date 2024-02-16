@@ -1,7 +1,7 @@
 ## VASO PIPELINE - SEGMENTATION AND LAYERS
 
 ## Set up the environment
-root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
+root_dir=/Users/barilari/data/sandbox/sandbox_layerfMRI-pipeline
 raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
@@ -11,7 +11,7 @@ layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
 layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
 layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 
-source ${code_dir}/lib/layerfMRI-toolbox/src/config_layerfMRI_pipeline.sh
+${code_dir}/lib/layerfMRI-toolbox/src/config_layerfMRI_pipeline.sh
 
 ## Get raw data (bidslike files)
 
@@ -21,48 +21,51 @@ subID="SC08"
 sesID="02"
 modality="anat"
 
-# import_raw_bidslike.sh \
-#     $raw_dir \
-#     $layerfMRI_fs_segmentation_dir \
-#     $subID \
-#     $sesID \
-#     $modality
+import_raw_bidslike.sh \
+    $raw_dir \
+    $layerfMRI_fs_segmentation_dir \
+    $subID \
+    $sesID \
+    $modality
 
-# ## Remove the MP2RAGE noise via presurfer
+## Remove the MP2RAGE noise via presurfer
 
-# UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1.nii
+UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1.nii
 
-# inv2_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_ses-${sesID}_acq-r0p75_inv-2_MP2RAGE.nii
+inv2_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_ses-${sesID}_acq-r0p75_inv-2_MP2RAGE.nii
 
-# $matlabpath -nodisplay -nosplash -nodesktop \
-#     -r "UNIT1='$UNIT1_image'; \
-#     INV2='$inv2_image'; \
-#     addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
-#     run_presurfer_denoise(UNIT1, INV2); \
-#     exit"
+$matlabpath -nodisplay -nosplash -nodesktop \
+    -r "UNIT1='$UNIT1_image'; \
+    INV2='$inv2_image'; \
+    addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
+    run_presurfer_denoise(UNIT1, INV2); \
+    exit"
 
-# ## Run SPM12 bias field correction via presurfer
+## Run SPM12 bias field correction via presurfer
 
-# UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised.nii
+UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised.nii
 
-# $matlabpath -nodisplay -nosplash -nodesktop \
-#     -r "UNIT1='$UNIT1_image'; \
-#     addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
-#     run_presurfer_biasfieldcorr(UNIT1); \
-#     exit"
+$matlabpath -nodisplay -nosplash -nodesktop \
+    -r "UNIT1='$UNIT1_image'; \
+    addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
+    run_presurfer_biasfieldcorr(UNIT1); \
+    exit"
 
 ## Run freesurfer recon-all
 
 anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
-
-filename=$anat_image
-output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer
+output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}
 openmp=4
 
 run_freesurfer_recon_all.sh \
     $anat_image \
     $layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer \
-    4
+    $openmp
+
+exit 1
+
+# STILL BELOW HERE IS WIP #################################
+
 
 ## Run suma
 
