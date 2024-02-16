@@ -51,54 +51,59 @@ $matlabpath -nodisplay -nosplash -nodesktop \
     run_presurfer_biasfieldcorr(UNIT1); \
     exit"
 
-## Run freesurfer recon-all
+## Run freesurfer recon-all (this will take at least 5h)
 
 anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
 output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}
-openmp=8
+openmp=1
+
+# NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`, I don't know what is the best option atm
 
 run_freesurfer_recon_all.sh \
     $anat_image \
     $layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer \
     $openmp
 
-# BELOW HERE IS WIP, MIGHT EXPLODE #################################
+## Run suma reconstruction 
 
-return
-
-## Run suma reconstruction
-
-fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/surf
+fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/freesurfer/surf
 suma_output_dir=$layerfMRI_mesh_dir/sub-${subID}
 
 run_suma_fs_to_surface.sh \
     $fs_surf_path \
-    $subID
+    $suma_output_dir \
+    sub-$subID
 
 ## Resample anatomical
 
 # To be used as a reference for the resampling of the surface 
 # images
 
-image_to_resample=
-output_dir=
-output_filename=
+image_to_resample=$suma_output_dir/SUMA/T1.nii.gz
+output_dir=$suma_output_dir
+output_filename=sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected.nii.gz
 resample_factor_iso=3
 
-resample_image_iso.sh \
+resample_afni_image_iso.sh \
     $image_to_resample \
     $output_dir \
     $output_filename \
     $resample_factor_iso
 
-## Upsample the surface image
+# BELOW HERE IS WIP, MIGHT EXPLODE #################################
+
+echo "Aborting since next steps are not debugged yet"
+exit 1
+
+## Upsample the surface image (this will take long time and a hog memory, 
+#  if in linux consider increasing swap memory)
 
 # Number of edge divides for linear icosahedron tesselation 
 # the higehr the number the long the computation is
 
-SUMA_dir=${fs_surf_path}
+suma_dir=$fs_surf_path
 
-upsampled_anat=${output_dir}/${$output_filename}
+upsampled_anat=$output_dir/$output_filename
 
 # Number of edge divides for linear icosahedron tesselation 
 # the higehr the number the long the computation is
