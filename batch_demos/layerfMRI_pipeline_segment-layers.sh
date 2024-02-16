@@ -1,7 +1,7 @@
 ## VASO PIPELINE - SEGMENTATION AND LAYERS
 
 ## Set up the environment
-root_dir=/Users/barilari/data/sandbox/sandbox_layerfMRI-pipeline
+root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
 raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
@@ -11,7 +11,7 @@ layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
 layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
 layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 
-${code_dir}/lib/layerfMRI-toolbox/src/config_layerfMRI_pipeline.sh
+source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh
 
 ## Get raw data (bidslike files)
 
@@ -55,21 +55,20 @@ $matlabpath -nodisplay -nosplash -nodesktop \
 
 anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
 output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}
-openmp=4
+openmp=8
 
 run_freesurfer_recon_all.sh \
     $anat_image \
     $layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer \
     $openmp
 
-exit 1
+# BELOW HERE IS WIP, MIGHT EXPLODE #################################
 
-# STILL BELOW HERE IS WIP #################################
-
+return
 
 ## Run suma
 
-fs_surf_path=${freesurfer_reconall_dir}/surf #sub
+fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/surf
 
 run_suma_fs_to_surface.sh \
     $fs_surf_path \
