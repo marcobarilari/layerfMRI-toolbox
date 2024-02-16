@@ -1,44 +1,39 @@
 # !bin/bash
 
-set -e
+if [[ -v layerfmriconfig ]]; then
 
+    echo ""
+    echo "layerfMRI-toolbox is already configured"
+    echo ""
 
-# if [[ -v layerfmriconfig ]]; then
-
-#     echo ""
-#     echo "layerfMRI toolbox is already configured"
-#     echo ""
-
-#     return
-# fi
+    exit 0
+fi
 
 
 
 ## set up the environment here below
 
 # fresurfer
-export FREESURFER_HOME=/usr/local/freesurfer/7.3.2
+# export FREESURFER_HOME=/usr/local/freesurfer/7.3.2 #monster
+export FREESURFER_HOME=/Applications/freesurfer/7.4.1 #mac
 
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 # matlab
-matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
+# matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
 
 ## do not modify from here below 
 
 # get the path of the current script aka the toolbox
-layerfmri_toolbox_dir="$(dirname $0)"
+# layerfmri_toolbox_dir="$(dirname $0)"
+
+layerfmri_toolbox_dir=/Users/barilari/data/sandbox/sandbox_layerfMRI-pipeline/code/lib/layerfMRI-toolbox
 
 # make all the scripts executable
-return
-lss $layerfmri_toolbox_dir/*/*/*.sh
-return
-
-
-chmod 777 $layerfmri_toolbox_dir/*/*/*.sh
+find $layerfmri_toolbox_dir -name '*.sh' -exec chmod u+x {} \;
 
 # add the toolbox to the path
-export PATH=$PATH:$layerfmri_toolbox_dir/config_layerfMRI_pipeline.sh
+export PATH=$PATH:$layerfmri_toolbox_dir
 export PATH=$PATH:$(find $layerfmri_toolbox_dir/ -maxdepth 1 -type d | paste -sd ":" -)
 
 ## print messages
