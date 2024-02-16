@@ -66,9 +66,7 @@ You should be good to go
 
 ## Ideal structure of the derivatives (see demos):
 
-see [WIP-folder_organization](WIP-folder_organization.md) and provide feedbacks. 
-
-
+see [WIP-folder_organization](WIP-folder_organization.md) and provide feedbacks. Thinking about t options atm.
 
 ## Phylosophy of the pipeline
 
