@@ -1,34 +1,17 @@
 # VASO pipeline v0.1.0 - BETA*
 
-* new commits will break the code very often
+(*) new commits will break the code very often
 
 This is a bash/python/matlab/R toolbox to perfomr layer-fMRI VASO analyses using many softwares. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples on how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
 
-## What it can do [WIP]
+## How to use it
 
-* Prepapre (`presurfer`) and segment (`freesurfer`) and anatomical using e.g. `MP2RAGE`
+The layerfMRI-toolbox helps woth two main strams of data analyses:
 
-* Prepare a high quality rim file (WM GM pial mask) for layeryfication (`SUMA`) (manual editig might be needed though)
+1. segmentatio and layerification of anatomical data.
+2. vaso timeseries preprocessing.
 
-* Coregister the rim file to EPI distorde space (`ANTs`
-
-* Create layers mask (`LAYNII`)
-
-* Apply thermal noisecleaning on VASO data (`NORDIC`)
-  
-* Preprocess VASO data (motion correction `AFNI`; bold correction `LAYNII`, T1w image from `nulled` contrast)
-
-* Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
-
-## Data input format
-
-1. Nifti files, what else
-2. It deals with
-   1. `(nulled + not nulled).nii` series 
-   2. `nulled.nii` and `not nulled.nii` separated series
-   3. time series with nordic noise volumes appended at the end
-
-## Prerequisite
+### Prerequisite
 
 * AFNI vXXX (in the path)
 * LAYNII vXXX (in the path)
@@ -42,13 +25,6 @@ This is a bash/python/matlab/R toolbox to perfomr layer-fMRI VASO analyses using
 * Lots of patient :) (tips: most of the time is just a path problem)
 
 Tested on Linux (Ubuntu xxx) and Mac OSX xxx
-
-## How to use it
-
-The layerfMRI-toolbox helps woth two main strams of data analyses:
-
-1. segmentatio and layerification of anatomical data.
-2. vaso timeseries preprocessing.
 
 ### Installation
 
@@ -65,6 +41,30 @@ git clone -recursive https://github.com/marcobarilari/layerfMRI-toolbox.git
 4. Check the demos for suggested pipelines in the `batch demos` (and check paths there as well if you intend to use them).
 
 You should be good to go
+
+### What it can do [WIP]
+
+* Prepapre (`presurfer`) and segment (`freesurfer`) and anatomical using e.g. `MP2RAGE`
+
+* Prepare a high quality rim file (WM GM pial mask) for layeryfication (`SUMA`) (manual editig might be needed though)
+
+* Coregister the rim file to EPI distorde space (`ANTs`)
+
+* Create layers mask (`LAYNII`)
+
+* Apply thermal noisecleaning on VASO data (`NORDIC`)
+  
+* Preprocess VASO data (motion correction `AFNI`; bold correction `LAYNII`, T1w image from `nulled` contrast)
+
+* Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
+
+### Data input format
+
+1. Nifti files, what else
+2. It deals with
+   1. `(nulled + not nulled).nii` series 
+   2. `nulled.nii` and `not nulled.nii` separated series
+   3. time series with nordic noise volumes appended at the end
 
 ## Ideal project folder structure, this is a yoda folder:
 
