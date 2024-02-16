@@ -1,7 +1,7 @@
 ## VASO PIPELINE - SEGMENTATION AND LAYERS
 
 ## Set up the environment
-root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
+export root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
 raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
@@ -51,7 +51,8 @@ $matlabpath -nodisplay -nosplash -nodesktop \
     run_presurfer_biasfieldcorr(UNIT1); \
     exit"
 
-## Run freesurfer recon-all (this will take at least 5h)
+## Run freesurfer recon-all 
+#  !!! this will take at least 5h on crunch machines
 
 anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
 output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}
@@ -75,13 +76,12 @@ run_suma_fs_to_surface.sh \
     sub-$subID
 
 ## Resample anatomical
-
-# To be used as a reference for the resampling of the surface 
-# images
+#  The image will used as a reference for the resampling of the surface 
+#  images
 
 image_to_resample=$suma_output_dir/SUMA/T1.nii.gz
 output_dir=$suma_output_dir
-output_filename=sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected.nii.gz
+output_filename=sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
 resample_factor_iso=3
 
 resample_afni_image_iso.sh \
@@ -90,42 +90,41 @@ resample_afni_image_iso.sh \
     $output_filename \
     $resample_factor_iso
 
-# BELOW HERE IS WIP, MIGHT EXPLODE #################################
+## Upsample the surface image 
+#  !!! with `linDepth=2000` this will take long time (up to 4h) and a hog memory (up 40 GB) *per hemisphere*
+#  !!! to make the process faster you can run the two hemispheres in parallel in separate terminals
+#  !!! if in linux, consider increasesing the swap memory.
 
-echo "Aborting since next steps are not debugged yet"
-exit 1
-
-## Upsample the surface image (this will take long time and a hog memory, 
-#  if in linux consider increasing swap memory)
-
-# Number of edge divides for linear icosahedron tesselation 
-# the higehr the number the long the computation is
-
-suma_dir=$fs_surf_path
-
-upsampled_anat=$output_dir/$output_filename
+suma_dir=$layerfMRI_mesh_dir/sub-${subID}/SUMA
+upsampled_anat=$suma_dir/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
 
 # Number of edge divides for linear icosahedron tesselation 
-# the higehr the number the long the computation is
-linDepth=2000
+# the higher the number, the longer the computation
+# Suggested values: 2000 for high resolution, 100 for debugging
+linDepth=100 
 
 hemisphere="lh"
 
-upsample_SUMA_surface.sh \
-    $SUMA_dir \
-    $upsampled_anat
+upsample_suma_surface.sh \
+    $suma_dir \
+    $upsampled_anat \
     $subID \
     $linDepth \
     $hemisphere
 
 hemisphere="rh"
 
-upsample_SUMA_surface.sh \
-    $SUMA_dir \
-    $upsampled_anat
+upsample_suma_surface.sh \
+    $suma_dir \
+    $upsampled_anat \
     $subID \
     $linDepth \
     $hemisphere
+
+# BELOW HERE IS WIP, MIGHT EXPLODE #################################
+
+echo "Aborting since next steps are not debugged yet"
+exit 1
 
 ## map_surface_to_volume_GM_WM
 

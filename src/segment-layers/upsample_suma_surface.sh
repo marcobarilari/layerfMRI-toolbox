@@ -10,14 +10,19 @@ print_process_logfile.sh \
     $vasopipeline_logfiles_dir \
     run_surface_to_rim
 
-SUMA_dir=$1
-output_dir=$2
-upsampled_anat=$3
-subID=$4
-linDepth=$5
-hemisphere=$6
+suma_dir=$1
+upsampled_anat=$2
+subID=$3
+linDepth=$4
+hemisphere=$5
 
-get dense mesh
+cd $suma_dir
+
+# Upsample the surface ouptut
+echo ""
+echo "Moving to $suma_dir"
+echo "Upsampling the surface ouptut for sub-$subID - $hemisphere hemisphere"
+echo ""
 
 MapIcosahedron \
     -spec ${subID}_${hemisphere}.spec \
@@ -26,7 +31,7 @@ MapIcosahedron \
     -overwrite \
     -verb
 
-echo  "dense mesh starting"
+echo  "Dense mesh starting"
 
 # get spec for the new file
 quickspec \
@@ -52,3 +57,8 @@ inspec \
     -detail 2 \
     -prefix std_BOTH.ld${linDepth}.${hemisphere}.spec \
     -overwrite
+
+# Go back to previous working directory
+echo ""
+echo "Going back to previous working directory"
+cd -

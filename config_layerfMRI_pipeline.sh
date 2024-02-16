@@ -1,6 +1,6 @@
 # !bin/bash
 
-if [[ -v layerfmriconfig ]]; then
+if [[ -v layerfmriconfig || layerfmriconfig == 0 ]]; then
 
     echo ""
     echo "layerfMRI-toolbox is already configured"
