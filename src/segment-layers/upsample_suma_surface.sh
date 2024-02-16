@@ -8,7 +8,7 @@ set -e
 
 print_process_logfile.sh \
     $vasopipeline_logfiles_dir \
-    run_surface_to_rim
+    $(basename "$0" .sh)
 
 suma_dir=$1
 output_dir=$2

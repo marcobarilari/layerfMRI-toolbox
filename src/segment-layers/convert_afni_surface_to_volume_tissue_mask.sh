@@ -10,7 +10,7 @@ set -e
 
 print_process_logfile.sh \
     $vasopipeline_logfiles_dir \
-    convert_urface_to_volume_tissue_mask
+    $(basename "$0" .sh)
 
 suma_dir=$1
 output_dir=$2

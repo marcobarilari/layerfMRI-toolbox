@@ -157,19 +157,28 @@ convert_afni_surface_to_volume_tissue_mask.sh \
     $linDepth \
     $hemisphere
 
+## Make the RIM to be inspected and manually edited if necessary
+#  the outout is rim012.nii.gz to be visually inspected and manually edited if necessary
+#  You might cosnider to first align it to EPI space and then manually edit it
+#  and then make the final rim and make layers in the next steps
+
+rim_layer_dir=$layerfMRI_layers_dir/sub-${subID}
+rim_filename=rim012.nii.gz
+linDepth=100 
+
+make_afni_GM_WM_rim.sh \
+    $rim_layer_dir \
+    $rim_filename \
+    $linDepth
+
+################################################################
+#      VISUAL INSPECTION AND MANUAL EDITING IF NECESSARY       #
+################################################################
 
 # BELOW HERE IS WIP, MIGHT EXPLODE #################################
 
 echo "Aborting since next steps are not debugged yet"
 exit 1
-
-## Make the RIM (rim012.nii.gz) to be inspected and manually edited if necessary
-
-combing_GM_WM.sh
-
-################################################################
-#      VISUAL INSPECTION AND MANUAL EDITING IF NECESSARY       #
-################################################################
 
 ## Bring the RIM to the EPI space
 
