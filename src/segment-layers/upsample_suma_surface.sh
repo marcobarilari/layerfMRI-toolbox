@@ -11,10 +11,11 @@ print_process_logfile.sh \
     run_surface_to_rim
 
 suma_dir=$1
-upsampled_anat=$2
-subID=$3
-linDepth=$4
-hemisphere=$5
+output_dir=$2
+upsampled_anat=$3
+subID=$4
+linDepth=$5
+hemisphere=$6
 
 cd $suma_dir
 

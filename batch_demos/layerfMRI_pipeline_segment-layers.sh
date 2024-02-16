@@ -1,7 +1,17 @@
 ## VASO PIPELINE - SEGMENTATION AND LAYERS
 
-## Set up the environment
+# This script is a demo of the layerfMRI pipeline for the segmentation and layers for 1 subject only
+
+## Set up the YODA folder path
 export root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
+
+## Select subjet and session
+
+subID="SC08"
+sesID="02"
+modality="anat"
+
+## Set up the paths
 raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
@@ -11,16 +21,10 @@ layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
 layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
 layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 
+## Configure the layerfMRI pipeline (open this script to input your paths and preferences)
 source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh
 
 ## Get raw data (bidslike files)
-
-# Select subjet and session
-
-subID="SC08"
-sesID="02"
-modality="anat"
-
 import_raw_bidslike.sh \
     $raw_dir \
     $layerfMRI_fs_segmentation_dir \
@@ -58,7 +62,8 @@ anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf
 output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}
 openmp=1
 
-# NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`, I don't know what is the best option atm
+# NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`
+# I don't know what is the best naming option atm
 
 run_freesurfer_recon_all.sh \
     $anat_image \
@@ -121,20 +126,50 @@ upsample_suma_surface.sh \
     $linDepth \
     $hemisphere
 
+## Convert segmentated tissue from surface to volume maks
+
+suma_dir=$layerfMRI_mesh_dir/sub-${subID}/SUMA
+upsampled_anat=$layerfMRI_mesh_dir/sub-${subID}/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
+output_dir=$layerfMRI_layers_dir/sub-${subID}
+
+# Number of edge divides for linear icosahedron tesselation 
+# the higher the number, the longer the computation
+# Suggested values: 2000 for high resolution, 100 for debugging
+linDepth=100 
+
+hemisphere="lh"
+
+convert_afni_surface_to_volume_tissue_mask.sh \
+    $suma_dir \
+    $output_dir \
+    $upsampled_anat \
+    $subID \
+    $linDepth \
+    $hemisphere
+
+hemisphere="rh"
+
+convert_afni_surface_to_volume_tissue_mask.sh \
+    $suma_dir \
+    $output_dir \
+    $upsampled_anat \
+    $subID \
+    $linDepth \
+    $hemisphere
+
+
 # BELOW HERE IS WIP, MIGHT EXPLODE #################################
 
 echo "Aborting since next steps are not debugged yet"
 exit 1
 
-## map_surface_to_volume_GM_WM
-
-map_surface_to_volume_GM_WM.sh <SUMA_dir> <upsampled_anat> <subID> <linDepth> <hemisphere>
-
-map_surface_to_volume_GM_WM.sh <SUMA_dir> <upsampled_anat> <subID> <linDepth> <hemisphere>
-
 ## Make the RIM (rim012.nii.gz) to be inspected and manually edited if necessary
 
 combing_GM_WM.sh
+
+################################################################
+#      VISUAL INSPECTION AND MANUAL EDITING IF NECESSARY       #
+################################################################
 
 ## Bring the RIM to the EPI space
 
