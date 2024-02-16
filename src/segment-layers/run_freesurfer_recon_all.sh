@@ -24,13 +24,13 @@ mkdir -p $output_dir
 SUBJECTS_DIR=$output_dir
 
 recon-all -all \
-    -s $output_dir/fresurfer \
+    -s fresurfer \
     -hires \
     -i $filename \
-    -expert expert.opts \ # add path?
+    -expert "$(dirname $0)"/expert.opts \
     -parallel -openmp $openmp
 
-echo ""
-echo "recon-all done!"
-echo "Find the output here : $output_dir"
-echo ""
+# echo ""
+# echo "recon-all done!"
+# echo "Find the output here : $output_dir"
+# echo ""
