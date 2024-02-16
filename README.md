@@ -4,6 +4,22 @@
 
 This is a bash/python/matlab/R toolbox to perfomr layer-fMRI VASO analyses using many softwares. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples on how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
 
+## What it can do [WIP]
+
+* Prepapre (`presurfer`) and segment (`freesurfer`) and anatomical using e.g. `MP2RAGE`
+
+* Prepare a high quality rim file (WM GM pial mask) for layeryfication (`SUMA`) (manual editig might be needed though)
+
+* Coregister the rim file to EPI distorde space (`ANTs`
+
+* Create layers mask (`LAYNII`)
+
+* Apply thermal noisecleaning on VASO data (`NORDIC`)
+  
+* Preprocess VASO data (motion correction `AFNI`; bold correction `LAYNII`, T1w image from `nulled` contrast)
+
+* Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
+
 ## Data input format
 
 1. Nifti files, what else
