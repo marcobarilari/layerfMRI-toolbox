@@ -8,15 +8,18 @@ set -e
 # usage: run_suma_fs_to_surface.sh <fspath> <subID>
 
 print_process_logfile.sh \
-    $vasopipeline_logfiles_dir \
     suma_fs_to_surface
 
-fspath=$1
+echo "exit for debugging"
+
+
+fs_surf_path=$1
 subID=$2  
 
 @SUMA_Make_Spec_FS \
     -sid $subID \
-    -fspath $fspath \
+    -fspath $fs_surf_path \
     -NIFTI 
 
+mv $fs_surf_path/SUMA $suma_output_dir
     # -ldpref check if it take the suma output somewhere else
