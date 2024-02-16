@@ -6,7 +6,7 @@ raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
 
-layerfMRI_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles
+export layerfMRI_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles
 layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
 layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
 layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
@@ -66,15 +66,19 @@ run_freesurfer_recon_all.sh \
 
 return
 
-## Run suma
+## Run suma reconstruction
 
 fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/surf
+suma_output_dir=$layerfMRI_mesh_dir/sub-${subID}
 
 run_suma_fs_to_surface.sh \
     $fs_surf_path \
     $subID
 
 ## Resample anatomical
+
+# To be used as a reference for the resampling of the surface 
+# images
 
 image_to_resample=
 output_dir=
