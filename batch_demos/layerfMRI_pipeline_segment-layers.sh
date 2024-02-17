@@ -22,7 +22,7 @@ layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
 layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 
 ## Configure the layerfMRI pipeline (open this script to input your paths and preferences)
-source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh
+source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh 
 
 ## Get raw data (bidslike files)
 import_raw_bidslike.sh \
@@ -180,11 +180,26 @@ make_afni_GM_WM_rim.sh \
 echo "Aborting since next steps are not debugged yet"
 exit 1
 
-## Bring the RIM to the EPI space
+## Move images to  EPI distorted space
 
-coregister_anat_to_epi.sh
+# Move anatomical to EPI space
 
-coregister_mask_to_epi.sh
+image_to_warp=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
+epi_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_T1_weighted.nii.gz
+output_dir=$layerfMRI_layers_dir/sub-${subID}
+output_prefix=ANTs
+output_filename=sub-${subID}_space-EPI_UNIT1.nii.gz
+
+coreg_ants_anat_to_epi.sh \
+    $image_to_warp \
+    $epi_image \
+    $mask_image \
+    $output_dir \
+    $output_prefix \
+    $output_filename
+
+# Move mask/rim to EPI space
+coregister_ants_mask_to_epi.sh
 
 ################################################################
 #      VISUAL INSPECTION AND MANUAL EDITING IF NECESSARY       #
