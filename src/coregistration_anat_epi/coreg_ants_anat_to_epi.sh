@@ -15,7 +15,7 @@ epi_image=$2
 mask_image=$3
 output_dir=$4
 output_prefix=$5
-output_filename=$6
+# output_filename=$6
 
 antsRegistration \
     --verbose 1 \
