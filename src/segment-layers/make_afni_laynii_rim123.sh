@@ -39,7 +39,7 @@ LN2_CHOLMO \
 
 3dcalc \
     -a $input_rim \
-    -b rimGM_padded.nii.gz \
+    -b $output_dir/rimGM_padded.nii.gz \
     -expr 'equals(a,2)*equals(b,1)' \
     -prefix $output_dir/rim_WM.nii.gz \
     -overwrite \

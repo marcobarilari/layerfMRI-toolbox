@@ -247,7 +247,6 @@ make_afni_laynii_rim123.sh \
     $output_filename
 
 
-
 ################################################################
 #      VISUAL INSPECTION AND MANUAL EDITING IF NECESSARY       #
 ################################################################
