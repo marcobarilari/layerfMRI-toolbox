@@ -4,6 +4,15 @@
 
 This is a bash/python/matlab/R toolbox to perfomr layer-fMRI VASO analyses using many softwares. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples on how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
 
+Contributors:
+
+- Marco Barilari
+- Renzo Huber
+- Daniel Glen
+- Paul Taylor
+- Kenshu Koiso
+- et al. ... if you think your name is missing, please do not hesitate to reach out
+
 ## How to use it
 
 The layerfMRI-toolbox helps woth two main strams of data analyses:

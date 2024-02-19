@@ -1,4 +1,4 @@
-## VASO PIPELINE - SEGMENTATION AND LAYERS
+## layerfMRI-toolbox - SEGMENTATION AND LAYERS
 
 # This script is a demo of the layerfMRI pipeline for the segmentation and layers for 1 subject only
 
@@ -245,7 +245,6 @@ make_afni_laynii_rim123.sh \
     $input_rim \
     $output_dir \
     $output_filename
-
 
 
 ################################################################
