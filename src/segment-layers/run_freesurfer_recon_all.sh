@@ -18,13 +18,13 @@ echo "Will run recon-all on: "
 echo " - $filename"
 
 # remove the recon-all output otherwise freesurfer complains
-rm -rf $output_dir/fresurfer
+rm -rf $output_dir
 mkdir -p $output_dir
 
 SUBJECTS_DIR=$output_dir
 
 recon-all -all \
-    -s fresurfer \
+    -s $output_dir \
     -hires \
     -i $filename \
     -expert "$(dirname $0)"/expert.opts \

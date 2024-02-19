@@ -1,4 +1,4 @@
-# VASO pipeline v0.1.0 - BETA*
+# layerfMRI-toolbox v0.1.0 - BETA*
 
 (*) new commits will break the code very often
 
@@ -57,6 +57,8 @@ You should be good to go
 * Preprocess VASO data (motion correction `AFNI`; bold correction `LAYNII`, T1w image from `nulled` contrast)
 
 * Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
+
+* For almost each process, it spits out a logfile `process_name_YYYYMMDDHHMMSS.txt` which is what is printed in the comand line. Useful for debuggin and when multiple processeses are running on the background in remote machines within seprate sessions (e.g. using `screen`).
 
 ### Data input format
 
