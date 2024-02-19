@@ -6,9 +6,9 @@ set -e
 #
 # usage: coreg_ants_anat_to_epi.sh <image_to_warp> <epi_image> <mask_image> <output_dir> <output_prefix> <output_filename>
 
-# print_process_logfile.sh \
-#     $vasopipeline_logfiles_dir \
-#      $(basename "$0" .sh)
+print_process_logfile.sh \
+    $vasopipeline_logfiles_dir \
+     $(basename "$0" .sh)
 
 image_to_warp=$1
 epi_image=$2
@@ -23,13 +23,11 @@ echo $mask_image
 echo $output_dir
 echo $output_prefix
 
-cd $output_dir
-
 antsRegistration \
     --verbose 1 \
     --dimensionality 3 \
     --float 0 \
-    --output "["${output_prefix}"_,"${output_prefix}"_Warped.nii.gz,"${output_prefix}"_InverseWarped.nii.gz]" \
+    --output "["${output_dir}"/"${output_prefix}"_,"${output_dir}"/"${output_prefix}"_Warped.nii.gz,"${output_dir}"/"${output_prefix}"_InverseWarped.nii.gz]" \
     --interpolation Linear \
     --use-histogram-matching 0 \
     --winsorize-image-intensities "[0.005,0.995]" \
@@ -49,6 +47,3 @@ antsRegistration \
     --shrink-factors "4x4x2x1" \
     --smoothing-sigmas "3x2x1x0vox" \
     -x "${mask_image}"
-
-
-    cd -
