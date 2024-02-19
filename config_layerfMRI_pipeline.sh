@@ -1,6 +1,6 @@
 # !bin/bash
 
-if [[ -v layerfmriconfig ]]; then
+if [[ -v layerfmriconfigured ]]; then
 
     echo ""
     echo "layerfMRI-toolbox is already configured"
@@ -23,14 +23,14 @@ matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
 ## DO NOT TOUCH HERE BELOW ###################################################
 
 # get the path of the current script aka the toolbox
-layerfmri_toolbox_dir="$(dirname $0)"
+# layerfMRI_toolbox_dir="$(dirname $0)"
 
 # make all the scripts executable
-find $layerfmri_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
+find $layerfMRI_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
 
 # add the toolbox to the path
-export PATH=$PATH:$layerfmri_toolbox_dir
-export PATH=$PATH:$(find $layerfmri_toolbox_dir/src -maxdepth 1 -type d | paste -sd ":" -)
+export PATH=$PATH:$layerfMRI_toolbox_dir
+export PATH=$PATH:$(find $layerfMRI_toolbox_dir/src -maxdepth 1 -type d | paste -sd ":" -)
 
 ## print messages
 
@@ -46,8 +46,19 @@ echo "                  /                                              "
 echo "    __________(_ /_______________________________________________"
 echo ""
 echo ""
+echo "    Contributors: "
+echo "      - Marco Barilari"
+echo "      - Renzo Huber"
+echo "      - Daniel Haen"
+echo "      - Paul Taylor"
+echo "      - Kenshu Koiso"
+echo "      - et al. ... if you think your name is missing,"
+echo "        please do not hesitate to reach out"
+echo ""
+echo ""
 
-layerfmriconfig=1
+
+layerfmriconfigured=1
 
 
 
@@ -103,7 +114,7 @@ layerfmriconfig=1
 # ooooo__oooo_o_o____oo__ooooo__oo______oo_____oo_______oo_oo_____oo_oooo_
 # _______________ooooo____________________________________________________
 
-
+# .........................................................................
 # .%%.......%%%%...%%..%%..%%%%%%..%%%%%...%%%%%%..%%...%%..%%%%%...%%%%%%.
 # .%%......%%..%%...%%%%...%%......%%..%%..%%......%%%.%%%..%%..%%....%%...
 # .%%......%%%%%%....%%....%%%%....%%%%%...%%%%....%%.%.%%..%%%%%.....%%...
@@ -112,7 +123,7 @@ layerfmriconfig=1
 # .........................................................................
 
 
-
+# .........................................................................
 # .##.......####...##..##..######..#####...######..##...##..#####...######.
 # .##......##..##...####...##......##..##..##......###.###..##..##....##...
 # .##......######....##....####....#####...####....##.#.##..#####.....##...

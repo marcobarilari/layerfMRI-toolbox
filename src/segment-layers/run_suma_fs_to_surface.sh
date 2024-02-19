@@ -8,11 +8,14 @@
 set -e
 
 print_process_logfile.sh \
-    suma_fs_to_surface
-
+    $(basename "$0" .sh)
+    
 fs_surf_path=$1
 suma_output_dir=$2
 subID=$3
+
+# delete otherwise it will not rerun
+rm -rf $fs_surf_path/SUMA
 
 @SUMA_Make_Spec_FS \
     -sid $subID \
@@ -20,6 +23,8 @@ subID=$3
     -NIFTI 
 
     # -ldpref check if it take the suma output somewhere else
+
+rm -rf  $suma_output_dir
 
 mkdir -p $suma_output_dir
 

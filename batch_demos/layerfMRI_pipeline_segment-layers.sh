@@ -1,7 +1,5 @@
 ## VASO PIPELINE - SEGMENTATION AND LAYERS
 
-mem_cpu_lloger.sh start marcobarilari
-
 # This script is a demo of the layerfMRI pipeline for the segmentation and layers for 1 subject only
 
 ## Set up the YODA folder path
@@ -17,6 +15,7 @@ modality="anat"
 raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
+export layerfMRI_toolbox_dir=${code_dir}/lib/layerfMRI-toolbox
 
 export layerfMRI_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles/sub-${subID}
 layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
@@ -26,152 +25,155 @@ layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 ## Configure the layerfMRI pipeline (open this script to input your paths and preferences)
 source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh 
 
-## Get raw data (bidslike files)
-import_raw_bidslike.sh \
-    $raw_dir \
-    $layerfMRI_fs_segmentation_dir \
-    $subID \
-    $sesID \
-    $modality
 
-## Remove the MP2RAGE noise via presurfer
+# mem_cpu_logger.sh start marcobarilari
 
-UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1.nii
+# ## Get raw data (bidslike files)
+# import_raw_bidslike.sh \
+#     $raw_dir \
+#     $layerfMRI_fs_segmentation_dir \
+#     $subID \
+#     $sesID \
+#     $modality
 
-inv2_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_ses-${sesID}_acq-r0p75_inv-2_MP2RAGE.nii
+# ## Remove the MP2RAGE noise via presurfer
 
-$matlabpath -nodisplay -nosplash -nodesktop \
-    -r "UNIT1='$UNIT1_image'; \
-    INV2='$inv2_image'; \
-    addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
-    run_presurfer_denoise(UNIT1, INV2); \
-    exit"
+# UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1.nii
 
-## Run SPM12 bias field correction via presurfer
+# inv2_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/sub-${subID}_ses-${sesID}_acq-r0p75_inv-2_MP2RAGE.nii
 
-UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised.nii
+# $matlabpath -nodisplay -nosplash -nodesktop \
+#     -r "UNIT1='$UNIT1_image'; \
+#     INV2='$inv2_image'; \
+#     addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
+#     run_presurfer_denoise(UNIT1, INV2); \
+#     exit"
 
-$matlabpath -nodisplay -nosplash -nodesktop \
-    -r "UNIT1='$UNIT1_image'; \
-    addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
-    run_presurfer_biasfieldcorr(UNIT1); \
-    exit"
+# ## Run SPM12 bias field correction via presurfer
 
-## Run freesurfer recon-all 
-#  !!! this will take at least 5h on crunch machines
+# UNIT1_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/presurf_MPRAGEise/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised.nii
 
-anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
-output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}
-openmp=1
+# $matlabpath -nodisplay -nosplash -nodesktop \
+#     -r "UNIT1='$UNIT1_image'; \
+#     addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
+#     run_presurfer_biasfieldcorr(UNIT1); \
+#     exit"
 
-# NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`
-# I don't know what is the best naming option atm
+# # ## Run freesurfer recon-all 
+# # #  !!! this will take at least 5h on crunch machines
 
-run_freesurfer_recon_all.sh \
-    $anat_image \
-    $layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer \
-    $openmp
+# anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
+# output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat
+# openmp=8
 
-## Run suma reconstruction 
+# # NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`
+# # I don't know what is the best naming option atm
 
-fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/freesurfer/surf
-suma_output_dir=$layerfMRI_mesh_dir/sub-${subID}
+# run_freesurfer_recon_all.sh \
+#     $anat_image \
+#     $layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer \
+#     $openmp
 
-run_suma_fs_to_surface.sh \
-    $fs_surf_path \
-    $suma_output_dir \
-    sub-$subID
+# ## Run suma reconstruction 
 
-## Resample anatomical
-#  The image will used as a reference for the resampling of the surface 
-#  images
+# fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/freesurfer/surf
+# suma_output_dir=$layerfMRI_mesh_dir/sub-${subID}
 
-image_to_resample=$suma_output_dir/SUMA/T1.nii.gz
-output_dir=$suma_output_dir
-output_filename=sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
-resample_iso_factor=3
+# run_suma_fs_to_surface.sh \
+#     $fs_surf_path \
+#     $suma_output_dir \
+#     sub-$subID
 
-resample_afni_image_iso_factor.sh \
-    $image_to_resample \
-    $output_dir \
-    $output_filename \
-    $resample_iso_factor
+# ## Resample anatomical
+# #  The image will used as a reference for the resampling of the surface 
+# #  images
 
-## Upsample the surface image 
-#  !!! with `linDepth=2000` this will take long time (up to 4h) and a hog memory (up 40 GB) *per hemisphere*
-#  !!! to make the process faster you can run the two hemispheres in parallel in separate terminals
-#  !!! if in linux, consider increasesing the swap memory.
+# image_to_resample=$suma_output_dir/SUMA/T1.nii.gz
+# output_dir=$suma_output_dir
+# output_filename=sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
+# resample_iso_factor=3
 
-suma_dir=$layerfMRI_mesh_dir/sub-${subID}/SUMA
-upsampled_anat=$suma_dir/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
+# resample_afni_image_iso_factor.sh \
+#     $image_to_resample \
+#     $output_dir \
+#     $output_filename \
+#     $resample_iso_factor
 
-# Number of edge divides for linear icosahedron tesselation 
-# the higher the number, the longer the computation
-# Suggested values: 2000 for high resolution, 100 for debugging
-linDepth=100 
+# ## Upsample the surface image 
+# #  !!! with `linDepth=2000` this will take long time (up to 4h) and a hog memory (up 40 GB) *per hemisphere*
+# #  !!! to make the process faster you can run the two hemispheres in parallel in separate terminals
+# #  !!! if in linux, consider increasesing the swap memory.
 
-hemisphere="lh"
+# suma_dir=$layerfMRI_mesh_dir/sub-${subID}/SUMA
+# upsampled_anat=$suma_dir/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
 
-upsample_suma_surface.sh \
-    $suma_dir \
-    $upsampled_anat \
-    $subID \
-    $linDepth \
-    $hemisphere
+# # Number of edge divides for linear icosahedron tesselation 
+# # the higher the number, the longer the computation
+# # Suggested values: 2000 for high resolution, 100 for debugging
+# linDepth=100
 
-hemisphere="rh"
+# hemisphere="lh"
 
-upsample_suma_surface.sh \
-    $suma_dir \
-    $upsampled_anat \
-    $subID \
-    $linDepth \
-    $hemisphere
+# upsample_suma_surface.sh \
+#     $suma_dir \
+#     $upsampled_anat \
+#     $subID \
+#     $linDepth \
+#     $hemisphere
 
-## Convert segmentated tissue from surface to volume maks
+# hemisphere="rh"
 
-suma_dir=$layerfMRI_mesh_dir/sub-${subID}/SUMA
-upsampled_anat=$layerfMRI_mesh_dir/sub-${subID}/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
-output_dir=$layerfMRI_layers_dir/sub-${subID}
+# upsample_suma_surface.sh \
+#     $suma_dir \
+#     $upsampled_anat \
+#     $subID \
+#     $linDepth \
+#     $hemisphere
 
-# Number of edge divides for linear icosahedron tesselation 
-# the higher the number, the longer the computation
-# Suggested values: 2000 for high resolution, 100 for debugging
-linDepth=100 
+# ## Convert segmentated tissue from surface to volume maks
 
-hemisphere="lh"
+# suma_dir=$layerfMRI_mesh_dir/sub-${subID}/SUMA
+# upsampled_anat=$layerfMRI_mesh_dir/sub-${subID}/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_biascorrected_fromFS.nii.gz
+# output_dir=$layerfMRI_layers_dir/sub-${subID}
 
-convert_afni_surface_to_volume_tissue_mask.sh \
-    $suma_dir \
-    $output_dir \
-    $upsampled_anat \
-    $subID \
-    $linDepth \
-    $hemisphere
+# # Number of edge divides for linear icosahedron tesselation 
+# # the higher the number, the longer the computation
+# # Suggested values: 2000 for high resolution, 100 for debugging
+# # linDepth=100 
 
-hemisphere="rh"
+# hemisphere="lh"
 
-convert_afni_surface_to_volume_tissue_mask.sh \
-    $suma_dir \
-    $output_dir \
-    $upsampled_anat \
-    $subID \
-    $linDepth \
-    $hemisphere
+# convert_afni_surface_to_volume_tissue_mask.sh \
+#     $suma_dir \
+#     $output_dir \
+#     $upsampled_anat \
+#     $subID \
+#     $linDepth \
+#     $hemisphere
 
-## Make the RIM to be inspected and manually edited if necessary
-#  the outout is rim012.nii.gz to be visually inspected and manually edited if necessary
-#  You might cosnider to first align it to EPI space and then manually edit it
-#  and then make the final rim and make layers in the next steps
+# hemisphere="rh"
 
-rim_layer_dir=$layerfMRI_layers_dir/sub-${subID}
-rim_filename=rim012.nii.gz
-linDepth=100 
+# convert_afni_surface_to_volume_tissue_mask.sh \
+#     $suma_dir \
+#     $output_dir \
+#     $upsampled_anat \
+#     $subID \
+#     $linDepth \
+#     $hemisphere
 
-make_afni_GM_WM_rim.sh \
-    $rim_layer_dir \
-    $rim_filename \
-    $linDepth
+# ## Make the RIM to be inspected and manually edited if necessary
+# #  the outout is rim012.nii.gz to be visually inspected and manually edited if necessary
+# #  You might cosnider to first align it to EPI space and then manually edit it
+# #  and then make the final rim and make layers in the next steps
+
+# rim_layer_dir=$layerfMRI_layers_dir/sub-${subID}
+# rim_filename=rim012.nii.gz
+# # linDepth=100 
+
+# make_afni_GM_WM_rim.sh \
+#     $rim_layer_dir \
+#     $rim_filename \
+#     $linDepth
 
 ################################################################
 #      VISUAL INSPECTION AND MANUAL EDITING IF NECESSARY       #
@@ -181,12 +183,14 @@ make_afni_GM_WM_rim.sh \
 
 # Move anatomical to EPI space
 
-image_to_warp=$layerfMRI_fs_segmentation_dir/sub-${subID}/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
-epi_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_T1_weighted.nii.gz
-mask_image=$raw_dir/sub-SC08/ses-02/roi/bubble_MT_rh.nii.gz
+image_to_warp=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
+epi_image=$raw_dir /sub-${subID}/anat/sub-${subID}_ses-02_space-epi_T1w.nii.gz
+mask_image=$raw_dir/sub-SC08/ses-02/roi/sub-SC08_bubble_rMT.nii.gz
 output_dir=$layerfMRI_layers_dir/sub-${subID}
 output_prefix=ANTs
 output_filename=sub-${subID}_space-EPI_UNIT1.nii.gz
+
+export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4
 
 coreg_ants_anat_to_epi.sh \
     $image_to_warp \
@@ -197,9 +201,9 @@ coreg_ants_anat_to_epi.sh \
 
 # Upsample the T1w image extracted from vaso
 
-image_to_resample=$layerfMRI_fs_segmentation_dir/sub-${subID}/sub-${subID}_T1_weighted.nii.gz
+image_to_resample==$raw_dir/sub-${subID}/anat/sub-${subID}_ses-02_space-epi_T1w.nii.gz
 output_dir=$layerfMRI_layers_dir/sub-${subID}
-output_filename=sub-${subID}_res-0p25_T1w.nii.gz
+output_filename=sub-${subID}_ses-02_space-epi_res-0p25_T1w.nii.gz
 resample_iso_factor=3
 
 resample_ants_image_iso_factor.sh \
@@ -208,12 +212,11 @@ resample_ants_image_iso_factor.sh \
     $output_filename \
     $resample_iso_factor
 
-
 # Move mask/rim to EPI space
 # Move rim012 to epi space for manual editing and then reacting final rim and layers
 
 mask_to_warp=$layerfMRI_layers_dir/sub-${subID}/rim012.nii.gz
-epi_image_upsampled=$layerfMRI_layers_dir/sub-${subID}/sub-${subID}_res-0p25_T1w.nii.gz
+epi_image_upsampled=$layerfMRI_layers_dir/sub-${subID}/sub-${subID}_ses-02_space-epi_res-0p25_T1w.nii.gz
 MTxfm=$layerfMRI_layers_dir/sub-${subID}/ANTs_1Warp.nii.gz
 MTgenericAffine=$layerfMRI_layers_dir/sub-${subID}/ANTs_0GenericAffine.mat
 output_dir=$layerfMRI_layers_dir/sub-${subID}/
@@ -268,4 +271,4 @@ make_laynii_layers.sh \
 
 
 
-mem_cpu_lloger.sh stop marcobarilari
+# mem_cpu_logger.sh stop marcobarilari
