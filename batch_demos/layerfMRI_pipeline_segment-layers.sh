@@ -1,4 +1,4 @@
-## VASO PIPELINE - SEGMENTATION AND LAYERS
+## layerfMRI-toolbox - SEGMENTATION AND LAYERS
 
 # This script is a demo of the layerfMRI pipeline for the segmentation and layers for 1 subject only
 
