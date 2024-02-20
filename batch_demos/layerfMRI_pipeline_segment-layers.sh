@@ -25,8 +25,7 @@ layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 ## Configure the layerfMRI pipeline (open this script to input your paths and preferences)
 source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh 
 
-
-# mem_cpu_logger.sh start marcobarilari
+mem_cpu_logger.sh start marcobarilari
 
 ## Get raw data (bidslike files)
 import_raw_bidslike.sh \
@@ -64,7 +63,7 @@ $matlabpath -nodisplay -nosplash -nodesktop \
 
 anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
 output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat
-openmp=8
+openmp=4
 
 # NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`
 # I don't know what is the best naming option atm
@@ -110,7 +109,7 @@ upsampled_anat=$suma_dir/sub-${subID}_ses-${sesID}_res-r0p25_UNIT1_MPRAGEised_bi
 # Number of edge divides for linear icosahedron tesselation 
 # the higher the number, the longer the computation
 # Suggested values: 2000 for high resolution, 100 for debugging
-linDepth=100
+linDepth=2000
 
 hemisphere="lh"
 
@@ -190,7 +189,7 @@ output_dir=$layerfMRI_layers_dir/sub-${subID}
 output_prefix=ANTs
 output_filename=sub-${subID}_space-EPI_UNIT1.nii.gz
 
-export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=10
+export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=8
 
 coreg_ants_anat_to_epi.sh \
     $image_to_warp \
@@ -268,4 +267,4 @@ make_laynii_layers.sh \
     $output_dir \
     $output_filename
 
-# mem_cpu_logger.sh stop marcobarilari
+mem_cpu_logger.sh stop marcobarilari
