@@ -2,7 +2,7 @@
 
 (*) new commits will break the code very often
 
-This is a bash/python/matlab/R toolbox to perfomr layer-fMRI VASO analyses using many softwares. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples on how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
+This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using many software. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples on how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
 
 Contributors:
 
@@ -15,7 +15,7 @@ Contributors:
 
 ## How to use it
 
-The layerfMRI-toolbox helps woth two main strams of data analyses:
+The layerfMRI-toolbox helps with two main streams of data analyses:
 
 1. segmentatio and layerification of anatomical data.
 2. vaso timeseries preprocessing.
@@ -40,7 +40,7 @@ Tested on Linux (Ubuntu xxx) and Mac OSX xxx
 1. Add this repo to your analysis project folder (see below for suggestions) via git operation.
 
 ```bash
-git clone -recursive https://github.com/marcobarilari/layerfMRI-toolbox.git
+git clone --recursive https://github.com/marcobarilari/layerfMRI-toolbox.git
 ```
 
 2. Check you have all the prerequisites listed in this README file.
@@ -67,7 +67,7 @@ You should be good to go
 
 * Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
 
-* For almost each process, it spits out a logfile `process_name_YYYYMMDDHHMMSS.txt` which is what is printed in the comand line. Useful for debuggin and when multiple processeses are running on the background in remote machines within seprate sessions (e.g. using `screen`).
+* For almost each process, it spits out a logfile `YYYYMMDDHHMMSS_process_name.txt` which is what is printed in the command line. Useful for debugging and when multiple processeses are running on the background in remote machines within separate sessions (e.g. using `screen`).
 
 ### Data input format
 
@@ -88,21 +88,29 @@ You should be good to go
     ├── inputs
     │   └── raw # your awesome raw dataset + other input to not touch, ideally bidslike format
     └── outputs
-        └── derivates # where any processed file will be saved in seprate subfolders named by `software-step` 
+        └── derivates # where any processed file will be saved in separate subfolders named by `software-step` 
 ```
+
+To kick start, you can use the GitHub template [template_layerfMRI-toolbox_yoda](https://github.com/marcobarilari/template_layerfMRI-toolbox_yoda) which has already this toolbox installed. 
+
+1. Got to the link (up-rihtg)
+2. Click on `Use this tempale` green button (up-rihtg)
+3. Set you name
+4. Clone on your computer your new project repository
+5. Populate the repo with data a custom code
 
 ## Ideal structure of the derivatives (see demos):
 
-see [WIP-folder_organization](WIP-folder_organization.md) and provide feedbacks. Thinking about t options atm.
+see [WIP-folder_organization](WIP-folder_organization.md) and provide feedbacks. Thinking about multiple options atm.
 
-## Phylosophy of the pipeline
+## Philosophy of the pipeline
 
 1. Everyone is welcome to contribute.
 2. We don't believe this is the only way to analyze layer fMRI (VASO) data. It is one way of many, we just want to make it easier and faster.
-3. If you have a differnet and cool way to tackle a particular step, please make it available for everyone adding it to this repo. 
-4. This pipeline is a transparent box. We keep it easy so that eveyrone can easily open the scripts and look what is happening inside and contribute.
+3. If you have a different and cool way to tackle a particular step, please make it available for everyone adding it to this repo. 
+4. This pipeline is a transparent box. We keep it easy so that everyone can easily open the scripts and look what is happening inside and contribute.
 5. Each called "function" has an input and an output and should do just one operation/step on the data.
-6. The pipeline is made of modules that can be ordered in a differnet way. The example demo is just an example that suits the dummy data. In your paradigm you may have slightly different things that may benefit from eg a different steps order or custom code. Just get inspired.
+6. The pipeline is made of modules that can be ordered in a different way. The example demo is just an example that suits the dummy data. In your paradigm you may have slightly different things that may benefit from eg a different steps order or custom code. Just get inspired.
 
 ## TO DO: looking for contributions
 
