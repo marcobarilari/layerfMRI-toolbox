@@ -134,8 +134,12 @@ To kick start, you can use the GitHub template [template_layerfMRI-toolbox_yoda]
 1. Got to the link (up-right)
 2. Click on `Use this template` green button (up-right)
 3. Set your name
-4. Clone on your computer your new project repository
-5. Populate the repo with data a custom code
+4. Clone on your computer your new project repository via
+```bash
+# --recursive flag is very important!
+git clone --recursive your/repo/url
+```
+6. Populate the repo with data a custom code
 
 ## Ideal structure of the derivatives (see demos):
 
