@@ -2,7 +2,7 @@
 
 (*) new commits will break the code very often
 
-This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using many software. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples on how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
+This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using many software. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples of how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
 
 Contributors:
 
@@ -19,7 +19,7 @@ Contributors:
     - [Installation](#installation)
     - [What it can do \[WIP\]](#what-it-can-do-wip)
     - [Demo/Pipeline benchmarking](#demopipeline-benchmarking)
-      - [From higg-res anatomical to whole brain layers](#from-higg-res-anatomical-to-whole-brain-layers)
+      - [From high-res anatomical to whole brain layers](#from-higg-res-anatomical-to-whole-brain-layers)
     - [Data input format](#data-input-format)
   - [Ideal project folder structure, this is a yoda folder:](#ideal-project-folder-structure-this-is-a-yoda-folder)
   - [Ideal structure of the derivatives (see demos):](#ideal-structure-of-the-derivatives-see-demos)
@@ -30,8 +30,8 @@ Contributors:
 
 The layerfMRI-toolbox helps with two main streams of data analyses:
 
-1. segmentatio and layerification of anatomical data.
-2. vaso timeseries preprocessing.
+1. segmentation and layerification of anatomical data.
+2. vaso time series preprocessing.
 
 ### Prerequisite
 
@@ -44,7 +44,7 @@ The layerfMRI-toolbox helps with two main streams of data analyses:
 - Nordic commit:
 - A good computer (better if it is a crunch computer or a cluster)
 - Basic experience with Python/Bash scripting
-- Lots of patient :) (tips: most of the time is just a path problem)
+- Lots of patience :) (tips: most of the time is just a path problem)
 
 Tested on Linux (Ubuntu xxx) and Mac OSX xxx
 
@@ -66,21 +66,21 @@ You should be good to go
 
 ### What it can do [WIP]
 
-* Prepapre (`presurfer`) and segment (`freesurfer`) and anatomical using e.g. `MP2RAGE`
+* Prepare (`presurfer`) and segment (`freesurfer`) and anatomical using e.g. `MP2RAGE`
 
-* Prepare a high quality rim file (WM GM pial mask) for layeryfication (`SUMA`) (manual editig might be needed though)
+* Prepare a high-quality rim file (WM GM pial mask) for layeryfication (`SUMA`) (manual editig might be needed though)
 
 * Coregister the rim file to EPI distorde space (`ANTs`)
 
 * Create layers mask (`LAYNII`)
 
-* Apply thermal noisecleaning on VASO data (`NORDIC`)
+* Apply thermal noise-cleaning on VASO data (`NORDIC`)
   
 * Preprocess VASO data (motion correction `AFNI`; bold correction `LAYNII`, T1w image from `nulled` contrast)
 
 * Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
 
-* For almost each process, it spits out a logfile `YYYYMMDDHHMMSS_process_name.txt` which is what is printed in the command line. Useful for debugging and when multiple processeses are running on the background in remote machines within separate sessions (e.g. using `screen`).
+* For almost every process, it spits out a logfile `YYYYMMDDHHMMSS_process_name.txt` which is what is printed in the command line. Useful for debugging and when multiple processes are running in the background in remote machines within separate sessions (e.g. using `screen`).
 
 ### Demo/Pipeline benchmarking
 
@@ -92,9 +92,9 @@ The demo has been run on a crunching computer (cpp-labMONSTER):
 
 RAM and CPU usage are sampled every ~30 seconds.
 
-#### From higg-res anatomical to whole brain layers
+#### From high-res anatomical to whole brain layers
 
-This section refers to the demo `layerfMRI_pipeline_segment-layers.sh` using a highr-res anatomical MP2RAGE whole brain (0.75 mm iso) and T1w in EPI space derived from vaso functional data of a specific task experiment (0.75 mm iso, partial brain coverage).
+This section refers to the demo `layerfMRI_pipeline_segment-layers.sh` using a high-res anatomical MP2RAGE whole brain (0.75 mm iso) and T1w in EPI space derived from vaso functional data of a specific task experiment (0.75 mm iso, partial brain coverage).
 
 ![image info](./src/benchmark/ram.png)
 
@@ -102,7 +102,7 @@ This section refers to the demo `layerfMRI_pipeline_segment-layers.sh` using a h
 
 ![image info](./src/benchmark/disk.png)
 
-CONCLUSION: It will hit hard on the memory (ram or swap). To increase swap memory in Linux chek here xxx. Windows and mac should be already configured to ~~steal memory to the HD~~ increase the swap automatically if ram is full.
+CONCLUSION: It will hit hard on the memory (RAM or swap). To increase swap memory in Linux check here xxx. Windows and Mac should be already configured to ~~steal memory to the HD~~ increase the swap automatically if the RAM is full.
 
 ### Data input format
 
@@ -119,7 +119,7 @@ CONCLUSION: It will hit hard on the memory (ram or swap). To increase swap memor
     .
     ├── code
     │   ├── lib # where layerfMRI-toolbox lives
-    │   ├── src # where your code and the the batch file to run layerfMRI-toolbox live
+    │   ├── src # where your code and the batch file to run layerfMRI-toolbox live
     ├── inputs
     │   └── raw # your awesome raw dataset + other input to not touch, ideally bidslike format
     └── outputs
@@ -128,9 +128,9 @@ CONCLUSION: It will hit hard on the memory (ram or swap). To increase swap memor
 
 To kick start, you can use the GitHub template [template_layerfMRI-toolbox_yoda](https://github.com/marcobarilari/template_layerfMRI-toolbox_yoda) which has already this toolbox installed. 
 
-1. Got to the link (up-rihtg)
-2. Click on `Use this tempale` green button (up-rihtg)
-3. Set you name
+1. Got to the link (up-right)
+2. Click on `Use this template` green button (up-right)
+3. Set your name
 4. Clone on your computer your new project repository
 5. Populate the repo with data a custom code
 
@@ -143,9 +143,9 @@ see [WIP-folder_organization](WIP-folder_organization.md) and provide feedbacks.
 1. Everyone is welcome to contribute.
 2. We don't believe this is the only way to analyze layer fMRI (VASO) data. It is one way of many, we just want to make it easier and faster.
 3. If you have a different and cool way to tackle a particular step, please make it available for everyone adding it to this repo. 
-4. This pipeline is a transparent box. We keep it easy so that everyone can easily open the scripts and look what is happening inside and contribute.
+4. This pipeline is a transparent box. We keep it easy so that everyone can easily open the scripts and look at what is happening inside and contribute.
 5. Each called "function" has an input and an output and should do just one operation/step on the data.
-6. The pipeline is made of modules that can be ordered in a different way. The example demo is just an example that suits the dummy data. In your paradigm you may have slightly different things that may benefit from eg a different steps order or custom code. Just get inspired.
+6. The pipeline is made of modules that can be ordered in a different way. The example demo is just an example that suits the dummy data. In your paradigm, you may have slightly different things that may benefit from eg a different steps order or custom code. Just get inspired.
 
 ## TO DO: looking for contributions
 
