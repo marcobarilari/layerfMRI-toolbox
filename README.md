@@ -22,16 +22,16 @@ The layerfMRI-toolbox helps with two main streams of data analyses:
 
 ### Prerequisite
 
-* AFNI vXXX (in the path)
-* LAYNII vXXX (in the path)
-* Freesurfer vXXX
-* SPM12 vXXX (in the path)
-* ANTS vXXX
-* Presurfer commit: (as submodule)
-* Nordic commit:
-* A good computer (better if it is a crunch computer or a cluster)
-* Basic experience with Python/Bash scripting
-* Lots of patient :) (tips: most of the time is just a path problem)
+- AFNI vXXX (in the path)
+- LAYNII vXXX (in the path)
+- Freesurfer vXXX
+- SPM12 vXXX (in the path)
+- ANTS vXXX
+- Presurfer commit: (as submodule)
+- Nordic commit:
+- A good computer (better if it is a crunch computer or a cluster)
+- Basic experience with Python/Bash scripting
+- Lots of patient :) (tips: most of the time is just a path problem)
 
 Tested on Linux (Ubuntu xxx) and Mac OSX xxx
 
@@ -68,6 +68,28 @@ You should be good to go
 * Quality metrics (`LAYNII`) as tSNR, noise distribution etc.
 
 * For almost each process, it spits out a logfile `YYYYMMDDHHMMSS_process_name.txt` which is what is printed in the command line. Useful for debugging and when multiple processeses are running on the background in remote machines within separate sessions (e.g. using `screen`).
+
+### Demo/Pipeline benchmarking
+
+The demo has been run on a crunching computer (cpp-labMONSTER):
+
+- Linux 6.2.0-36-generic #37~22.04.1-Ubuntu
+- 24 CPUs (Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz)
+- 64GB ram + 200GB swap memory
+
+RAM and CPU usage are sampled every ~30 seconds.
+
+#### From higg-res anatomical to whole brain layers
+
+This section refers to the demo `layerfMRI_pipeline_segment-layers.sh` using a highr-res anatomical MP2RAGE whole brain (0.75 mm iso) and T1w in EPI space derived from vaso functional data of a specific task experiment (0.75 mm iso, partial brain coverage).
+
+![image info](./src/benchmark/ram.png)
+
+![image info](./src/benchmark/cpu.png)
+
+![image info](./src/benchmark/disk.png)
+
+CONCLUSION: It will hit hard on the memory (ram or swap). To increase swap memory in Linux chek here xxx. Windows and mac should be already configured to ~~steal memory to the HD~~ increase the swap automatically if ram is full.
 
 ### Data input format
 
