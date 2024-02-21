@@ -13,6 +13,19 @@ Contributors:
 - Kenshu Koiso
 - et al. ... if you think your name is missing, please do not hesitate to reach out
 
+- [layerfMRI-toolbox v0.1.0 - BETA\*](#layerfmri-toolbox-v010---beta)
+  - [How to use it](#how-to-use-it)
+    - [Prerequisite](#prerequisite)
+    - [Installation](#installation)
+    - [What it can do \[WIP\]](#what-it-can-do-wip)
+    - [Demo/Pipeline benchmarking](#demopipeline-benchmarking)
+      - [From higg-res anatomical to whole brain layers](#from-higg-res-anatomical-to-whole-brain-layers)
+    - [Data input format](#data-input-format)
+  - [Ideal project folder structure, this is a yoda folder:](#ideal-project-folder-structure-this-is-a-yoda-folder)
+  - [Ideal structure of the derivatives (see demos):](#ideal-structure-of-the-derivatives-see-demos)
+  - [Philosophy of the pipeline](#philosophy-of-the-pipeline)
+  - [TO DO: looking for contributions](#to-do-looking-for-contributions)
+
 ## How to use it
 
 The layerfMRI-toolbox helps with two main streams of data analyses:
