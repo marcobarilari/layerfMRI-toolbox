@@ -4,7 +4,7 @@
 
 This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using many software. Mostly a set of wrapper functions tailored for layer-fMRI analyses from start to bottom, there are examples of how to put things together but feel free to plug here and there your custom code for your custom analyses tailored to your specific project/data.
 
-Contributors:
+## Contributors
 
 - Marco Barilari
 - Renzo Huber
@@ -13,13 +13,16 @@ Contributors:
 - Kenshu Koiso
 - et al. ... if you think your name is missing, please do not hesitate to reach out
 
+## TOC
 - [layerfMRI-toolbox v0.1.0 - BETA\*](#layerfmri-toolbox-v010---beta)
+  - [Contributors](#contributors)
+  - [TOC](#toc)
   - [How to use it](#how-to-use-it)
     - [Prerequisite](#prerequisite)
     - [Installation](#installation)
     - [What it can do \[WIP\]](#what-it-can-do-wip)
     - [Demo/Pipeline benchmarking](#demopipeline-benchmarking)
-      - [From high-res anatomical to whole brain layers](#from-higg-res-anatomical-to-whole-brain-layers)
+      - [From high-res anatomical to whole brain layers](#from-high-res-anatomical-to-whole-brain-layers)
     - [Data input format](#data-input-format)
   - [Ideal project folder structure, this is a yoda folder:](#ideal-project-folder-structure-this-is-a-yoda-folder)
   - [Ideal structure of the derivatives (see demos):](#ideal-structure-of-the-derivatives-see-demos)
