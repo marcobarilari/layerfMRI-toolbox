@@ -17,11 +17,33 @@ output_dir=$4
 output_prefix=$5
 # output_filename=$6
 
-echo $image_to_warp
-echo $epi_image
-echo $mask_image
-echo $output_dir
-echo $output_prefix
+if [ ! -f "$image_to_warp" ]; then
+    echo ""
+    echo "Image to warp does not exists"
+    echo ""
+    exit 1 
+fi
+
+if [ ! -f "$epi_image" ]; then
+    echo ""
+    echo "EPI reference does not exists"
+    echo ""
+    exit 1 
+fi
+
+if [ ! -f "$mask_image" ]; then
+    echo ""
+    echo "Mask image does not exists"
+    echo ""
+    exit 1 
+fi
+
+if [ ! -d "$output_dir" ]; then
+    echo ""
+    echo "The directory where yo uwant to save the output does not exists"
+    echo ""
+    exit 1 
+fi
 
 antsRegistration \
     --verbose 1 \
