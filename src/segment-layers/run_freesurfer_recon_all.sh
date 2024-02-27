@@ -12,6 +12,7 @@ set -e
 filename=$1
 output_dir=$2
 openmp=$3
+anat_mask=$4
 
 echo ""
 echo "Will run recon-all on: "
@@ -28,7 +29,8 @@ recon-all -all \
     -hires \
     -i $filename \
     -expert "$(dirname $0)"/expert.opts \
-    -parallel -openmp $openmp
+    -parallel -openmp $openmp \
+    -xmask $anat_mask
 
 # echo ""
 # echo "recon-all done!"
