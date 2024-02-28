@@ -24,13 +24,15 @@ echo " - $filename"
 
 SUBJECTS_DIR=$output_dir
 
-recon-all -all \
-    -s $output_dir \
-    -hires \
-    -i $filename \
-    -expert "$(dirname $0)"/expert.opts \
-    -parallel -openmp $openmp \
-    -xmask $anat_mask
+recon-all                                                                    \
+    -all                                                                     \
+    -s         $output_dir                                                   \
+    -hires                                                                   \
+    -i         $filename                                                     \
+    -expert    "$(dirname $0)"/expert.opts                                   \
+    -parallel                                                                \
+    -openmp    $openmp                                                       \
+    -xmask     $anat_mask
 
 # echo ""
 # echo "recon-all done!"
