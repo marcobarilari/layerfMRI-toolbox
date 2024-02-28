@@ -2,9 +2,10 @@
 
 set -e
 
-## Coregister a mask image to the distorted EPI space using a deforamtion matrix
-#
-# usage: make_afni_laynii_rim123.sh <image_to_warp> <epi_image> <mask_image> <output_dir> <output_prefix> <output_filename>
+## Coregister a mask image to the distorted EPI space using a
+## deforamtion matrix
+# usage: make_afni_laynii_rim123.sh <image_to_warp> <epi_image> \
+#           <mask_image> <output_dir> <output_prefix> <output_filename>
 
 print_process_logfile.sh \
     $vasopipeline_logfiles_dir \

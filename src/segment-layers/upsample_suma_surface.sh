@@ -30,14 +30,14 @@ MapIcosahedron \
     -overwrite \
     -verb
 
-echo  "Dense mesh starting"
+echo  "++ Dense mesh starting"
 
 # get spec for the new file
 quickspec \
     -tn gii \
     std_${hemisphere}.ld${linDepth}.${hemisphere}.pial.gii
 
-mv \
+\mv \
     quick.spec \
     std_${hemisphere}.ld${linDepth}.${hemisphere}.pial.spec
 
@@ -45,7 +45,7 @@ quickspec \
     -tn gii \
     std_${hemisphere}.ld${linDepth}.${hemisphere}.smoothwm.gii
 
-mv \
+\mv \
     quick.spec \
     std_${hemisphere}.ld${linDepth}.${hemisphere}.smoothwm.spec
 
@@ -59,5 +59,5 @@ inspec \
 
 # Go back to previous working directory
 echo ""
-echo "Going back to previous working directory"
+echo "++ Going back to previous working directory"
 cd -

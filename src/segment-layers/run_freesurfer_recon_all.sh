@@ -19,8 +19,8 @@ echo "Will run recon-all on: "
 echo " - $filename"
 
 # remove the recon-all output otherwise freesurfer complains
-rm -rf $output_dir
-mkdir -p $output_dir
+\rm -rf $output_dir
+\mkdir -p $output_dir
 
 SUBJECTS_DIR=$output_dir
 

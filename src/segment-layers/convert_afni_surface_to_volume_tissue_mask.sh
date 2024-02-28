@@ -28,10 +28,10 @@ fi
 
 cd $suma_dir
 
-mkdir -p $output_dir
+\mkdir -p $output_dir
 
 echo ""
-echo "Generate RIBBON volume mask"
+echo "++ Generate RIBBON volume mask"
 echo ""
 
 3dSurf2Vol \
@@ -72,7 +72,7 @@ echo "Generate CSF volume mask"
 
 # generate GM
 
-echo "Generate GM volume mask"
+echo "++ Generate GM volume mask"
 
 # to test w/o applying any distance calculation #####
 3dSurf2Vol \
@@ -90,10 +90,11 @@ echo "Generate GM volume mask"
     -overwrite
 #####################################################
 
-echo "Generate WM volume mask"
+echo "++ Generate WM volume mask"
 
-#remove pial by subtracting 7 supra7_pial_${linDepth}_${hemisphere} to have GM without kissing gyri
-#generate WM
+# remove pial by subtracting 7 supra7_pial_${linDepth}_${hemisphere}
+# to have GM without kissing gyri
+# generate WM
 3dSurf2Vol \
     -spec std_BOTH.ld${linDepth}.${hemisphere}.spec \
     -surf_A std_${hemisphere}.ld${linDepth}.${hemisphere}.smoothwm.gii \
@@ -110,6 +111,6 @@ echo "Generate WM volume mask"
 
 # Go back to previous working directory
 echo ""
-echo "Going back to previous working directory"
+echo "++ Going back to previous working directory"
 cd -
 
