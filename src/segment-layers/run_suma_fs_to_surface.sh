@@ -24,8 +24,8 @@ rm -rf $fs_surf_path/SUMA
 
     # -ldpref check if it take the suma output somewhere else
 
-rm -rf  $suma_output_dir
+\rm -rf  $suma_output_dir
 
-mkdir -p $suma_output_dir
+\mkdir -p $suma_output_dir
 
-mv $fs_surf_path/SUMA $suma_output_dir
+\mv $fs_surf_path/SUMA $suma_output_dir
