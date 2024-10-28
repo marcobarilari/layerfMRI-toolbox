@@ -23,7 +23,7 @@ matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
 ## DO NOT TOUCH HERE BELOW ###################################################
 
 # get the path of the current script aka the toolbox
-layerfMRI_toolbox_dir="$(dirname $0)"
+# layerfMRI_toolbox_dir="$(dirname $0)"
 
 # make all the scripts executable
 find $layerfMRI_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
