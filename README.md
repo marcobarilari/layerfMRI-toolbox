@@ -69,7 +69,7 @@ Tested on Linux (Ubuntu xxx) and Mac OSX xxx
 
 #### Automatic by creating the ideal project folder structure (aka a YODA folder):
 
-Download [this script](src/utils/make_yoda_layerfMRI-toolbox.sh) and run it as follow (change project folder name and directory where you want to create it):
+Download [this script](https://github.com/marcobarilari/layerfMRI-toolbox/blob/main/src/utils/make_yoda_layerfMRI-toolbox.sh) and run it as follow (change project folder name and directory where you want to create it):
 
 ```bash
 bash path/to/make_yoda_layerfMRI-toolbox.sh \
