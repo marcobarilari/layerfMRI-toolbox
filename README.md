@@ -32,11 +32,13 @@ This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using
   - [How to use it](#how-to-use-it)
     - [Prerequisite](#prerequisite)
     - [Installation](#installation)
+      - [Automatic by creating the ideal project folder structure (aka a YODA folder):](#automatic-by-creating-the-ideal-project-folder-structure-aka-a-yoda-folder)
+      - [Automatic by cloning a template with ideal project folder structure (aka a YODA folder) and DATALAD:](#automatic-by-cloning-a-template-with-ideal-project-folder-structure-aka-a-yoda-folder-and-datalad)
+      - [Manual](#manual)
     - [What it can do \[WIP\]](#what-it-can-do-wip)
     - [Demo/Pipeline benchmarking](#demopipeline-benchmarking)
       - [From high-res anatomical to whole brain layers](#from-high-res-anatomical-to-whole-brain-layers)
     - [Data input format](#data-input-format)
-  - [Ideal project folder structure, this is a yoda folder:](#ideal-project-folder-structure-this-is-a-yoda-folder)
   - [Ideal structure of the derivatives (see demos):](#ideal-structure-of-the-derivatives-see-demos)
   - [Philosophy of the pipeline](#philosophy-of-the-pipeline)
   - [TO DO: looking for contributions](#to-do-looking-for-contributions)
@@ -46,14 +48,14 @@ This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using
 The layerfMRI-toolbox helps with two main streams of data analyses:
 
 1. segmentation and layerification of anatomical data.
-2. vaso time series preprocessing.
+2. vaso time series preprocessing. [WIP - available in the future]
 
 ### Prerequisite
 
 - AFNI vXXX (in the path)
 - LAYNII vXXX (in the path)
-- Freesurfer vXXX
-- SPM12 vXXX (in the path)
+- Freesurfer v7+ 
+- Matlab with SPM12 vXXX (in the path)
 - ANTS vXXX
 - Presurfer commit: (as submodule)
 - Nordic commit:
@@ -65,6 +67,48 @@ Tested on Linux (Ubuntu xxx) and Mac OSX xxx
 
 ### Installation
 
+#### Automatic by creating the ideal project folder structure (aka a YODA folder):
+
+Download [this script](src/utils/make_yoda_layerfMRI-toolbox.sh) and run it as follow (change project folder name and directory where you want to create it):
+
+```bash
+bash path/to/make_yoda_layerfMRI-toolbox.sh \
+  my_folder_project_name \
+  where/I/want/to/create/it
+```
+
+```bash
+# output structure
+
+`analyses_layerfMRI_your-project-name`
+    .
+    ├── code
+    │   ├── lib # where layerfMRI-toolbox lives
+    │   ├── src # where your code and the batch file to run layerfMRI-toolbox live
+    ├── inputs
+    │   └── raw # your awesome raw dataset + other input to not touch, ideally bidslike format
+    └── outputs
+        └── derivates # where any processed file will be saved in separate subfolders named by `software-step` 
+```
+
+#### Automatic by cloning a template with ideal project folder structure (aka a YODA folder) and DATALAD:
+
+Use the GitHub template [template_layerfMRI-toolbox_yoda](https://github.com/marcobarilari/template_layerfMRI-toolbox_yoda), it has already this toolbox installed
+
+1. Got to the link (up-right)
+2. Click on `Use this template` green button (up-right)
+3. Set your name
+4. Clone on your computer your new project repository via
+
+```bash
+# --recursive flag is very important!
+git clone --recursive your/repo/url
+```
+
+5. Populate the repo with data a custom code
+
+#### Manual
+
 1. Add this repo to your analysis project folder (see below for suggestions) via git operation.
 
 ```bash
@@ -72,12 +116,8 @@ git clone --recursive https://github.com/marcobarilari/layerfMRI-toolbox.git
 ```
 
 2. Check you have all the prerequisites listed in this README file.
-
 3. Check the config file `config_layerfMRI_pipeline.sh` and modify it according to your software paths.
-
 4. Check the demos for suggested pipelines in the `batch demos` (and check paths there as well if you intend to use them).
-
-You should be good to go
 
 ### What it can do [WIP]
 
@@ -126,32 +166,6 @@ CONCLUSION: It will hit hard on the memory (RAM or swap). To increase swap memor
    1. `(nulled + not nulled).nii` series 
    2. `nulled.nii` and `not nulled.nii` separated series
    3. time series with nordic noise volumes appended at the end
-
-## Ideal project folder structure, this is a yoda folder:
-
-```bash
-`analyses_layerfMRI_your-project-name`
-    .
-    ├── code
-    │   ├── lib # where layerfMRI-toolbox lives
-    │   ├── src # where your code and the batch file to run layerfMRI-toolbox live
-    ├── inputs
-    │   └── raw # your awesome raw dataset + other input to not touch, ideally bidslike format
-    └── outputs
-        └── derivates # where any processed file will be saved in separate subfolders named by `software-step` 
-```
-
-To kick start, you can use the GitHub template [template_layerfMRI-toolbox_yoda](https://github.com/marcobarilari/template_layerfMRI-toolbox_yoda) which has already this toolbox installed. 
-
-1. Got to the link (up-right)
-2. Click on `Use this template` green button (up-right)
-3. Set your name
-4. Clone on your computer your new project repository via
-```bash
-# --recursive flag is very important!
-git clone --recursive your/repo/url
-```
-6. Populate the repo with data a custom code
 
 ## Ideal structure of the derivatives (see demos):
 
