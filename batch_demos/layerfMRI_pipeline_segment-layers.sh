@@ -1,8 +1,8 @@
-## VASO PIPELINE - SEGMENTATION AND LAYERS
+## layerfMRI PIPELINE - STRUCTURAL SEGMENTATION AND LAYERS
 
 # This script is a demo of the layerfMRI pipeline for the segmentation and layers for 1 subject only
 
-## Set up the YODA folder path
+## Set up the YODA folder path (YODA see the docs )
 export root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
 
 ## Select subjet and session
@@ -25,7 +25,8 @@ layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 ## Configure the layerfMRI pipeline (open this script to input your paths and preferences)
 source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh 
 
-mem_cpu_logger.sh start marcobarilari
+# start logging mRAM memory and CPU usage (change to specific user name)
+# mem_cpu_logger.sh start marcobarilari
 
 ## Get raw data (bidslike files)
 import_raw_bidslike.sh \
@@ -58,12 +59,21 @@ $matlabpath -nodisplay -nosplash -nodesktop \
     run_presurfer_biasfieldcorr(UNIT1); \
     exit"
 
-# ## Run freesurfer recon-all 
-# #  !!! this will take at least 5h on crunch machines
+## Run SPM12 brain mask extraction via presurfer
+
+$matlabpath -nodisplay -nosplash -nodesktop \
+    -r "INV2='$inv2_image'; \
+    addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
+    run_presurfer_brainmask(INV2); \
+    exit"
+
+## Run freesurfer recon-all 
+#  !!! this will take at least 5h on crunch machines
 
 anat_image=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat/presurf_MPRAGEise/presurf_biascorrect/sub-${subID}_ses-${sesID}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
 output_dir=$layerfMRI_fs_segmentation_dir/sub-${subID}/anat
 openmp=4
+anat_mask=xxx
 
 # NB: in $output_dir, freesurfer will create a folder called `freesurfer/freesurfer`
 # I don't know what is the best naming option atm
@@ -71,8 +81,9 @@ openmp=4
 run_freesurfer_recon_all.sh \
     $anat_image \
     $layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer \
-    $openmp
-
+    $openmp \
+    $anat_mask
+    
 ## Run suma reconstruction 
 
 fs_surf_path=$layerfMRI_fs_segmentation_dir/sub-${subID}/freesurfer/freesurfer/surf
@@ -267,4 +278,5 @@ make_laynii_layers.sh \
     $output_dir \
     $output_filename
 
-mem_cpu_logger.sh stop marcobarilari
+# stop logging mRAM memory and CPU usage (change to specific user name)
+# mem_cpu_logger.sh stop marcobarilari
