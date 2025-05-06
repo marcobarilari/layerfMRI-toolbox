@@ -83,7 +83,7 @@ RUN apt-get update -qq && \
 #     && echo "source /opt/freesurfer/SetUpFreeSurfer.sh" >> ~/.bashrc
 
 # Install ANTs (version 2.3.4)
-# Install ANTs (version 2.3.4) without --platform
+# Install ANTs (version 2.3.4)
 # COPY --from=kaczmarj/ants:2.3.4 /opt/ants /opt/ants
 # RUN echo "export PATH=/opt/ants:$PATH" >> ~/.bashrc
 
