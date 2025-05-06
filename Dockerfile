@@ -1,11 +1,39 @@
 # Use an Ubuntu base image
 FROM ubuntu:20.04
 
+# Notes to self:
+# - To build the image, run:
+#   docker build -t layerfmri_toolbox .
+# - To build the image with a specific tag, run:
+#   docker build -t layerfmri_toolbox:latest .
+# - To retag the image, run:
+#   docker tag layerfmri_toolbox:latest layerfmri_toolbox:0.1.0
+# - To run the image, use:
+#   docker run -it --rm layerfmri_toolbox
+# - To run a command inside the container, use:
+#   docker run -it --rm layerfmri_toolbox <command>
+# - To run a bash shell inside the container, use:
+#   docker run -it --rm layerfmri_toolbox bash
+# - To run a bash shell inside the container with a mounted volume, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir layerfmri_toolbox bash
+# - To run a bash shell inside the container with a mounted volume and a specific user, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir --user $(id -u):$(id -g) layerfmri_toolbox bash
+# - To run a bash shell inside the container with a mounted volume and a specific user and group, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir --user $(id -u):$(id -g) layerfmri_toolbox bash
+# - To run a bash shell inside the container with a mounted volume and a specific user and group and a specific working directory, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir --user $(id -u):$(id -g) -w /path/to/container/dir layerfmri_toolbox bash
+# - To run a bash shell inside the container with a mounted volume and a specific user and group and a specific working directory and a specific environment variable, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir --user $(id -u):$(id -g) -w /path/to/container/dir -e MY_ENV_VAR=my_value layerfmri_toolbox bash
+# - To run a bash shell inside the container with a mounted volume and a specific user and group and a specific working directory and a specific environment variable and a specific command, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir --user $(id -u):$(id -g) -w /path/to/container/dir -e MY_ENV_VAR=my_value layerfmri_toolbox bash -c "MY_COMMAND"
+# - To run a bash shell inside the container with a mounted volume and a specific user and group and a specific working directory and a specific environment variable and a specific command and a specific entrypoint, use:
+#   docker run -it --rm -v /path/to/local/dir:/path/to/container/dir --user $(id -u):$(id -g) -w /path/to/container/dir -e MY_ENV_VAR=my_value layerfmri_toolbox bash -c "MY_COMMAND" --entrypoint /bin/bash
+
 LABEL org.opencontainers.image.source="https://github.com/marcobarilari/layerfMRI-toolbox"
 LABEL org.opencontainers.image.url="https://github.com/marcobarilari/layerfMRI-toolbox"
 LABEL org.opencontainers.image.documentation="https://github.com/marcobarilari/layerfMRI-toolbox"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
-LABEL org.opencontainers.image.title="layerfmri_toolbox_v0.1.0"
+LABEL org.opencontainers.image.title="layerfmri_toolbox"
 LABEL org.opencontainers.image.description="A toolbox to ease layer fMRI analysis"
 
 # Set environment variables to avoid interactive prompts during installation
