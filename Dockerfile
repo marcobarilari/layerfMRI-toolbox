@@ -81,7 +81,11 @@ RUN apt-get update -qq && \
 # RUN wget -qO- https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2/freesurfer-linux-ubuntu20_amd64-7.3.2.tar.gz | tar -xz -C /opt \
 #     && echo "export FREESURFER_HOME=/opt/freesurfer" >> ~/.bashrc \
 #     && echo "source /opt/freesurfer/SetUpFreeSurfer.sh" >> ~/.bashrc
-
+FROM freesurfer/freesurfer:7.1.1
+COPY license /usr/local/freesurfer/.license
+RUN echo "export FREESURFER_HOME=/usr/local/freesurfer" >> ~/.bashrc \
+    && echo "source /usr/local/freesurfer/SetUpFreeSurfer.sh" >> ~/.bashrc
+    
 # Install ANTs (version 2.3.4)
 # Install ANTs (version 2.3.4)
 # COPY --from=kaczmarj/ants:2.3.4 /opt/ants /opt/ants
