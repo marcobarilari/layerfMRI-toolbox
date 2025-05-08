@@ -19,10 +19,13 @@ This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using
 ## Contributors
 
 - Marco Barilari
-- Renzo Huber
-- Daniel Glen
-- Paul Taylor
 - Kenshu Koiso
+- Paul A. Taylor
+- Omer Faruk Gulban Taylor
+- Daniel Glen
+- Peter Bandettini
+- Olivier Collignon
+- Renzo Huber
 - et al. ... if you think your name is missing, please do not hesitate to reach out
 
 ## TOC
@@ -35,6 +38,9 @@ This is a bash/python/matlab/R toolbox to perform layer-fMRI VASO analyses using
       - [Automatic by creating the ideal project folder structure (aka a YODA folder):](#automatic-by-creating-the-ideal-project-folder-structure-aka-a-yoda-folder)
       - [Automatic by cloning a template with ideal project folder structure (aka a YODA folder) and DATALAD:](#automatic-by-cloning-a-template-with-ideal-project-folder-structure-aka-a-yoda-folder-and-datalad)
       - [Manual](#manual)
+    - [Usage](#usage)
+      - [Via docker image](#via-docker-image)
+        - [Notes](#notes)
     - [What it can do \[WIP\]](#what-it-can-do-wip)
     - [Demo/Pipeline benchmarking](#demopipeline-benchmarking)
       - [From high-res anatomical to whole brain layers](#from-high-res-anatomical-to-whole-brain-layers)
@@ -118,6 +124,32 @@ git clone --recursive https://github.com/marcobarilari/layerfMRI-toolbox.git
 2. Check you have all the prerequisites listed in this README file.
 3. Check the config file `config_layerfMRI_pipeline.sh` and modify it according to your software paths.
 4. Check the demos for suggested pipelines in the `batch demos` (and check paths there as well if you intend to use them).
+
+### Usage 
+
+#### Via docker image
+
+```bash
+root_yoda=
+code=$root_yoda/code/lib/layerfMRI_toolbox
+inputs=$root_yoda/inputs
+output=$root_yoda/outputs
+fs_licese=path/to/freesurfe/license/fodler
+
+docker run -it --rm \
+  -v $code:/opt/layerfMRI-toolbox
+  -v $inputs:inputs \
+  -v $outputs:outputs \
+  -v $fs_licese/license.txt:/license.txt:ro \
+  -e FS_LICENSE='/license.txt' \
+  
+```
+##### Notes
+
+- If you encounter performance issues, consider increasing the resources allocated to Docker (e.g., memory, CPUs).
+- The `FS_LICENSE` environment variable is required for Freesurfer. Make sure to replace `fs_licese` with the path to your Freesurfer license file.
+
+This setup ensures a reproducible environment for running the `layerfMRI-toolbox` workflows.
 
 ### What it can do [WIP]
 

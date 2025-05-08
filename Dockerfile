@@ -51,6 +51,9 @@ RUN apt-get update -qq && \
         fonts-freefont-otf \
         ghostscript \
         git \
+        libmotif-dev \
+        libgsl23 \
+        libgsl-dev \
         gnuplot-x11 \
         libcurl4-gnutls-dev \
         liboctave-dev \
@@ -73,25 +76,24 @@ RUN apt-get update -qq && \
         /var/log/apt/term*
 
 # Copy AFNI tools from the official AFNI image
-# COPY --from=afni/afni_make_build:latest /opt/afni /opt/afni
-# RUN echo "export PATH=/opt/afni:$PATH" >> ~/.bashrc
+COPY --from=afni/afni_make_build:latest /opt/afni /opt/afni
+RUN echo "export PATH=/opt/afni/install:\$PATH" >> ~/.bashrc
 
-# Install FreeSurfer 7
-# freesurfer/freesurfer:7.4.1
-# RUN wget -qO- https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2/freesurfer-linux-ubuntu20_amd64-7.3.2.tar.gz | tar -xz -C /opt \
-#     && echo "export FREESURFER_HOME=/opt/freesurfer" >> ~/.bashrc \
-#     && echo "source /opt/freesurfer/SetUpFreeSurfer.sh" >> ~/.bashrc
-FROM freesurfer/freesurfer:7.1.1
-COPY license /usr/local/freesurfer/.license
-RUN echo "export FREESURFER_HOME=/usr/local/freesurfer" >> ~/.bashrc \
-    && echo "source /usr/local/freesurfer/SetUpFreeSurfer.sh" >> ~/.bashrc
-    
-# Install ANTs (version 2.3.4)
-# Install ANTs (version 2.3.4)
-# COPY --from=kaczmarj/ants:2.3.4 /opt/ants /opt/ants
-# RUN echo "export PATH=/opt/ants:$PATH" >> ~/.bashrc
+# Install FreeSurfer 7 via docker image freesurfer/freesurfer:7.4.1
+COPY --from=freesurfer/freesurfer:7.4.1 /usr/local/freesurfer /opt/freesurfer
+RUN echo "export FREESURFER_HOME=/opt/freesurfer" >> ~/.bashrc \
+    && echo "source /opt/freesurfer/SetUpFreeSurfer.sh" >> ~/.bashrc
 
-## Install SPM
+# see here https://surfer.nmr.mgh.harvard.edu/fswiki/infantFS-containers
+# docker run -it --rm \
+#   -v $HOME/license.txt:/license.txt:ro \
+#   -e FS_LICENSE='/license.txt'
+
+# Install ANTs (version 2.3.4)
+COPY --from=kaczmarj/ants:2.3.4 /opt/ants /opt/ants
+RUN echo "export PATH=/opt/ants/bin:\$PATH" >> ~/.bashrc
+
+# Install SPM
 RUN mkdir /opt/spm12 && \
     curl -SL https://github.com/spm/spm12/archive/r7771.tar.gz | \
     tar -xzC /opt/spm12 --strip-components 1 && \
@@ -101,6 +103,18 @@ RUN mkdir /opt/spm12 && \
     make -C /opt/spm12/src PLATFORM=octave && \
     make -C /opt/spm12/src PLATFORM=octave install && \
     ln -s /opt/spm12/bin/spm12-octave /usr/local/bin/spm12
+
+# Install LAYNII
+# Install dependencies for building LAYNII
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git cmake g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# Clone and build LAYNII
+RUN git clone --depth 1 https://github.com/layerfMRI/LAYNII.git /opt/laynii \
+    && cd /opt/laynii \
+    && make all \
+    && echo "export PATH=/opt/laynii:\$PATH" >> ~/.bashrc
 
 # Set the default command to run a shell
 CMD ["/bin/bash"]
