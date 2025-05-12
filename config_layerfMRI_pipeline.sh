@@ -1,38 +1,66 @@
-# # !bin/bash
+# !bin/bash
 
-# if [[ -v layerfmriconfigured ]]; then
+if [[ -v layerfmriconfigured ]]; then
 
-#     echo ""
-#     echo "layerfMRI-toolbox is already configured"
-#     echo ""
+    echo ""
+    echo "layerfMRI-toolbox is already configured"
+    echo ""
 
-#     return
-# fi
+    return
+fi
 
-# ## set up the environment here below
+## set up the environment here below
 
-# # fresurfer
-# export FREESURFER_HOME=/usr/local/freesurfer/7.3.2 #monster
-# # export FREESURFER_HOME=/Applications/freesurfer/7.4.1 #mac
+export CONTAINER=0
 
-# source $FREESURFER_HOME/SetUpFreeSurfer.sh
+# catch if we are in a docker/singulairty container
+if [ -f /.dockerenv ] || [ -f /run/.containerenv ]; then
+    echo "Running in a container"
+    # set up the paths here
+    export CONTAINER=1
+fi
 
-# # matlab
-# matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
+if [ $CONTAINER -eq 0 ]; then
 
-# ## DO NOT TOUCH HERE BELOW ###################################################
+    # fresurfer
+    export FREESURFER_HOME=/usr/local/freesurfer/7.3.2 #monster
+    # export FREESURFER_HOME=/Applications/freesurfer/7.4.1 #mac
 
-# # get the path of the current script aka the toolbox
-# # layerfMRI_toolbox_dir="$(dirname $0)"
+    source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
-# # make all the scripts executable
-# find $layerfMRI_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
+    # octave
 
-# # add the toolbox to the path
-# export PATH=$PATH:$layerfMRI_toolbox_dir
-# export PATH=$PATH:$(find $layerfMRI_toolbox_dir/src -maxdepth 1 -type d | paste -sd ":" -)
+    # decide here if you want to use octave or matlab. If running in a container, we will use octave and it is automatically set up
+    # 1 for octave, 0 for matlab
+    octave=1 
+    octavepath=/usr/bin/octave
 
-# ## print messages
+    # matlab
+    matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
+
+fi
+
+## DO NOT TOUCH HERE BELOW ###################################################
+
+# if we are we are in a container, let's set up the paths
+if [ $CONTAINER -eq 1 ]; then
+    
+    octave=1 
+    octavepath=/bin/octave-cli
+
+fi
+
+# get the path of the current script aka the toolbox
+# layerfMRI_toolbox_dir="$(dirname $0)"
+
+# make all the scripts executable
+find $layerfMRI_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
+
+# add the toolbox to the path
+export PATH=$PATH:$layerfMRI_toolbox_dir
+export PATH=$PATH:$(find $layerfMRI_toolbox_dir/src -maxdepth 1 -type d | paste -sd ":" -)
+
+## print credits
 
 echo ""
 echo ""

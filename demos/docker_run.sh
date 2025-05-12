@@ -1,21 +1,20 @@
 #!/bin/bash
 
-# run as 
-# docker run -it --rm \
-#    -v /home/marcobarilari/github/layerfMRI-toolbox/license.txt:/license.txt:ro \
-#    -e FS_LICENSE='/license.txt'
-#    -v $(pwd)/batch_demos/docker_run.sh:/docker_run.sh \
-#    layerfmri_toolbox \
-#    bash /docker_run.sh
 
-# CHECKS
-# 3dSkullStrip
-# LN2_LAYERS
-# antsApplyTransforms
-# freesurfer
+root_yoda=/mnt/HD_jupiter/marcobarilari/github/layerfMRI-toolbox/demos/demo_toy_data
+code=/mnt/HD_jupiter/marcobarilari/github/layerfMRI-toolbox
+inputs=$root_yoda/inputs/raw
+outputs=$root_yoda/outputs/derivatives
+fs_licese=/usr/local/freesurfer/7.3.2
 
-echo "Running fMRI tools inside Docker!"
-# afni --version
-# antsRegistration --version
-octave --eval "disp('SPM12 is ready!')"
+docker run -it --rm \
+   -v $code:/opt/layerfMRI-toolbox \
+   -v $inputs:data/inputs \
+   -v $outputs:data/outputs \
+   -v $fs_licese/license.txt:/license.txt:ro \
+   -e FS_LICENSE='/license.txt' \
+   layerfmri_toolbox \
+   bash demo_temp.sh # run the pipeline script
+
+
 

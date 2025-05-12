@@ -1,20 +1,23 @@
-## layerfMRI PIPELINE - STRUCTURAL SEGMENTATION AND LAYERS
+## layerfMRI PIPELINE - STRUCTURAL TISSUE SEGMENTATION AND LAYERS DEFINITION
 
-# This script is a demo of the layerfMRI pipeline for the segmentation and layers for 1 subject only
+# This script is a demo of the layerfMRI-TOOLBOX for the tissue segmentation and layers, it runs one subject per time
+#
+# USAGE:
+#  bash layerfMRI_pipeline_segment-layers.sh <subID>
+#  where <subID> is the subject ID (e.g. SC08)
+#  e.g. bash layerfMRI_pipeline_segment-layers.sh SC08
+#  This script is part of the layerfMRI-TOOLBOX
 
-## Set up the YODA folder path (YODA see the docs )
-export root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
+set -e
 
-## Select subjet and session
+# === Configure paths
+# Set up the YODA folder path (YODA see the docs )
+export root_dir=/home/marcobarilari/github/layerfMRI-toolbox/demos/demo_toy_data
 
-subID="SC08"
-sesID="02"
-modality="anat"
-
-## Set up the paths
 raw_dir=${root_dir}/inputs/raw
 derivatives_dir=${root_dir}/outputs/derivatives
 code_dir=${root_dir}/code
+
 export layerfMRI_toolbox_dir=${code_dir}/lib/layerfMRI-toolbox
 
 export layerfMRI_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles/sub-${subID}
@@ -22,8 +25,26 @@ layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
 layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
 layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
 
+## Select subjet and session
+
+subID=$1 
+sesID="02"
+modality="anat"
+
+## Set up the paths
+raw_dir=${root_dir}/inputs/raw
+derivatives_dir=${root_dir}/outputs/derivatives
+
+export layerfMRI_toolbox_dir=$/home/marcobarilari/github/layerfMRI-toolbox
+
+export layerfMRI_logfiles_dir=${derivatives_dir}/layerfMRI-logfiles/sub-${subID}
+
+layerfMRI_fs_segmentation_dir=${derivatives_dir}/layerfMRI-segmentation
+layerfMRI_mesh_dir=${derivatives_dir}/layerfMRI-surface-mesh
+layerfMRI_layers_dir=${derivatives_dir}/layerfMRI-layers
+
 ## Configure the layerfMRI pipeline (open this script to input your paths and preferences)
-source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh 
+source ${layerfMRI_toolbox_dir}/config_layerfMRI_pipeline.sh 
 
 # start logging mRAM memory and CPU usage (change to specific user name)
 # mem_cpu_logger.sh start marcobarilari

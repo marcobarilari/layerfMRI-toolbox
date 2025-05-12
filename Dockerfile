@@ -117,7 +117,7 @@ RUN git clone --depth 1 https://github.com/layerfMRI/LAYNII.git /opt/laynii \
     && echo "export PATH=/opt/laynii:\$PATH" >> ~/.bashrc
 
 # Ensure required directories exist inside the container
-# RUN mkdir -p /data/inputs /data/outputs
+RUN mkdir -p /data/inputs /data/outputs
 
 # Set the default command to run a shell
 CMD ["/bin/bash"]
