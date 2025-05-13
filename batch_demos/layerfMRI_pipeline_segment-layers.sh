@@ -44,7 +44,7 @@ import_raw_bidslike.sh                                                        \
     $sesID                                                                    \
     $modality
 
-++ "Remove the MP2RAGE noise via presurfer"
+echo "++ Remove the MP2RAGE noise via presurfer"
 
 anat_dir=$lfmri_fs_seg_dir/${subj}/anat
 UNIT1_image=${anat_dir}/${subj}_${ses}_acq-r0p75_UNIT1.nii
