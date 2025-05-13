@@ -1,4 +1,4 @@
-## VASO PIPELINE - SEGMENTATION AND LAYERS
+## layerfMRI-toolbox PIPELINE - STRUCTURAL TISSUE SEGMENTATION AND LAYERS DEFINITION
 
 # This script is a demo of the layerfMRI pipeline for the segmentation
 # and layers for 1 subject only
