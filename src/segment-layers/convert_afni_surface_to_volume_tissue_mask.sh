@@ -4,7 +4,7 @@ set -e
 
 ## Map back surface to volume and work on GM WM masks
 #
-# usage: convert_surface_to_volume_tissue_mask.sh <SUMA_dir> 
+# usage: convert_surface_to_volume_tissue_mask.sh <SUMA_dir> \
 #                <upsampled_anat> <subID> <linDepth> <hemisphere>
 #
 # Adapted from https://github.com/kenshukoiso/Whole_Brain_Project/blob/main/script/s06_thinner_pial.sh
