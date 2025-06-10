@@ -1,12 +1,13 @@
 ## layerfMRI-toolbox PIPELINE - STRUCTURAL TISSUE SEGMENTATION AND LAYERS DEFINITION
 
+
 # This script is a demo of the layerfMRI pipeline for the segmentation
 # and layers for 1 subject only
 
 # ver = 1.0
 # ============================================================================
 
-## Set up the YODA folder path
+## Set up the YODA folder path (YODA see the docs )
 export root_dir=/mnt/HD_jupiter/marcobarilari/sandbox/sandbox_layerfMRI-pipeline
 
 ## Select subject and session
@@ -33,7 +34,8 @@ lfmri_layers_dir=${deriv_dir}/layerfMRI-layers
 ## paths and preferences)
 source ${code_dir}/lib/layerfMRI-toolbox/config_layerfMRI_pipeline.sh 
 
-mem_cpu_logger.sh start marcobarilari
+# start logging mRAM memory and CPU usage (change to specific user name)
+# mem_cpu_logger.sh start marcobarilari
 
 echo "++ Get raw data (bidslike files)"
 
@@ -73,17 +75,31 @@ echo "++ Run freesurfer recon-all"
 # `freesurfer/freesurfer`. 
 # I don't know what is the best naming option atm
 
+## Run SPM12 brain mask extraction via presurfer
+
+$matlabpath -nodisplay -nosplash -nodesktop \
+    -r "INV2='$inv2_image'; \
+    addpath(genpath(fullfile('$code_dir', 'lib', 'layerfMRI-toolbox', 'src'))); \
+    run_presurfer_brainmask(INV2); \
+    exit"
+
+## Run freesurfer recon-all 
+#  !!! this will take at least 5h on crunch machines
+
 anat_image=${anat_dir}/presurf_MPRAGEise/presurf_biascorrect/${subj}_${ses}_acq-r0p75_UNIT1_MPRAGEised_biascorrected.nii
 output_dir=${anat_dir}
 openmp=4
+anat_mask=xxx
 
 run_freesurfer_recon_all.sh                                                   \
     $anat_image                                                               \
     $lfmri_fs_seg_dir/${subj}/freesurfer                                      \
-    $openmp
+    $openmp \
+    $anat_mask
 
 echo "++ Run suma reconstruction"
-
+    
+## Run suma reconstruction 
 fs_surf_path=$lfmri_fs_seg_dir/${subj}/freesurfer/freesurfer/surf
 suma_output_dir=$lfmri_mesh_dir/${subj}
 
@@ -280,4 +296,5 @@ make_laynii_layers.sh \
     $output_dir \
     $output_filename
 
-mem_cpu_logger.sh stop marcobarilari
+# stop logging mRAM memory and CPU usage (change to specific user name)
+# mem_cpu_logger.sh stop marcobarilari

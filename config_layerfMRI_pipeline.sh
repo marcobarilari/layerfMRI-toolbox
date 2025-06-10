@@ -1,38 +1,38 @@
-# !bin/bash
+# # !bin/bash
 
-if [[ -v layerfmriconfigured ]]; then
+# if [[ -v layerfmriconfigured ]]; then
 
-    echo ""
-    echo "layerfMRI-toolbox is already configured"
-    echo ""
+#     echo ""
+#     echo "layerfMRI-toolbox is already configured"
+#     echo ""
 
-    return
-fi
+#     return
+# fi
 
-## set up the environment here below
+# ## set up the environment here below
 
-# fresurfer
-export FREESURFER_HOME=/usr/local/freesurfer/7.3.2 #monster
-# export FREESURFER_HOME=/Applications/freesurfer/7.4.1 #mac
+# # fresurfer
+# export FREESURFER_HOME=/usr/local/freesurfer/7.3.2 #monster
+# # export FREESURFER_HOME=/Applications/freesurfer/7.4.1 #mac
 
-source $FREESURFER_HOME/SetUpFreeSurfer.sh
+# source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
-# matlab
-matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
+# # matlab
+# matlabpath=/usr/local/MATLAB/R2018a/bin/matlab
 
-## DO NOT TOUCH HERE BELOW ###################################################
+# ## DO NOT TOUCH HERE BELOW ###################################################
 
-# get the path of the current script aka the toolbox
-# layerfMRI_toolbox_dir="$(dirname $0)"
+# # get the path of the current script aka the toolbox
+# # layerfMRI_toolbox_dir="$(dirname $0)"
 
-# make all the scripts executable
-find $layerfMRI_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
+# # make all the scripts executable
+# find $layerfMRI_toolbox_dir/src -name '*.sh' -exec chmod u+x {} \;
 
-# add the toolbox to the path
-export PATH=$PATH:$layerfMRI_toolbox_dir
-export PATH=$PATH:$(find $layerfMRI_toolbox_dir/src -maxdepth 1 -type d | paste -sd ":" -)
+# # add the toolbox to the path
+# export PATH=$PATH:$layerfMRI_toolbox_dir
+# export PATH=$PATH:$(find $layerfMRI_toolbox_dir/src -maxdepth 1 -type d | paste -sd ":" -)
 
-## print messages
+# ## print messages
 
 echo ""
 echo ""
@@ -48,12 +48,14 @@ echo ""
 echo ""
 echo "    Contributors: "
 echo "      - Marco Barilari"
-echo "      - Renzo Huber"
-echo "      - Daniel Glen"
-echo "      - Paul Taylor"
 echo "      - Kenshu Koiso"
-echo "      - et al. ... if you think your name is missing,"
-echo "        please do not hesitate to reach out"
+echo "      - Paul A. Taylor"
+echo "      - Omer Faruk Gulban Taylor"
+echo "      - Daniel Glen"
+echo "      - Peter Bandettini"
+echo "      - Olivier Collignon"
+echo "      - Renzo Huber"
+echo "      - et al. ... do you want to be the next one?"
 echo ""
 echo ""
 
